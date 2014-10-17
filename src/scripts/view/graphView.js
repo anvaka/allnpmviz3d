@@ -1,6 +1,7 @@
 var createHitTest = require('./hitTest');
 var createUserInputController = require('./userInput');
 var renderNodes = require('./renderNodes');
+var renderLinks = require('./renderLinks');
 
 module.exports = graphView;
 
@@ -22,6 +23,7 @@ function graphView(graphModel) {
   view.onrender(userInputController.update);
 
   graphModel.on('nodesReady', renderNodes(view.getScene()));
+  graphModel.on('linksReady', renderLinks(view.getScene()));
 }
 
 function init3dView() {
