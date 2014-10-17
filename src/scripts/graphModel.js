@@ -4,14 +4,14 @@ var createGraph = require('ngraph.graph');
 module.exports = function($http, $q) {
   var graph = createGraph();
 
-  $http.get('/data/positions.bin', {
+  $http.get('data/positions.bin', {
     responseType: "arraybuffer"
   })
     .then(convertToPositions)
     .then(addNodesToGraph)
     .then(downloadLinks);
 
-  $http.get('./data/labels.json')
+  $http.get('data/labels.json')
     .then(addLabelsToGraph);
 
   var model = {
@@ -25,7 +25,7 @@ module.exports = function($http, $q) {
   return model;
 
   function downloadLinks() {
-    $http.get('/data/links.bin', {
+    $http.get('data/links.bin', {
       responseType: "arraybuffer"
     })
       .then(addLinksToGraph);
