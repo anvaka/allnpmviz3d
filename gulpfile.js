@@ -57,6 +57,9 @@ function makeDist() {
   if (!fs.existsSync('./dist')) {
     fs.mkdirSync('./dist');
   }
+  if (!fs.existsSync('./dist/data')) {
+    fs.mkdirSync('./dist/data');
+  }
 }
 
 function copyDist() {
@@ -65,12 +68,10 @@ function copyDist() {
   gulp.src('./src/index.html')
       .pipe(gulp.dest('./dist'));
 
-  gulp.src('./node_modules/angular/lib/angular.min.js')
-      .pipe(concat('external.min.js'))
-      .pipe(gulp.dest('./dist'));
-
   gulp.src('./node_modules/twitter-bootstrap-3.0.0/fonts/*')
       .pipe(gulp.dest('./dist/fonts/'));
+  gulp.src('./src/data/*')
+      .pipe(gulp.dest('./dist/data'));
 }
 
 function watchChanges() {

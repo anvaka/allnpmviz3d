@@ -20,8 +20,12 @@
     "yargs": "^1.2.1"
   },
   "dependencies": {
-    "twitter-bootstrap-3.0.0": "^3.0.0",
     "an": "~0.0.2",
-    "angular": "^1.2.10"
+    "angular": "^1.2.10",
+    "ngraph.events": "0.0.3",
+    "ngraph.graph": "0.0.4",
+    "three": "0.68",
+    "three.fly": "0.0.0",
+    "twitter-bootstrap-3.0.0": "^3.0.0"
   }
 }

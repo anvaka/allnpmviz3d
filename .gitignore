@@ -11,6 +11,7 @@ dist
 pids
 logs
 results
+src/data
 
 npm-debug.log
 node_modules

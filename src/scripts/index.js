@@ -1,3 +1,4 @@
+require('angular');
 require('./appController');
 
 var ngApp = angular.module('allnpmviz3d', []);
