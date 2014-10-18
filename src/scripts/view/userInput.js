@@ -14,11 +14,25 @@ function createUserInputController(camera) {
   controls.autoForward = false;
   controls.dragToLook = true;
 
+  var domElement = document.body;
+
+  domElement.addEventListener('keydown', keydown, false);
+
   return {
     update: update
   };
 
   function update() {
     controls.update(clock.getDelta());
+  }
+
+  function keydown(e) {
+    if (e.which === 32) { // spacebar
+      controls.dragToLook = !controls.dragToLook;
+
+      controls.moveState.yawLeft = 0;
+      controls.moveState.pitchDown = 0;
+      controls.updateRotationVector();
+    }
   }
 }
