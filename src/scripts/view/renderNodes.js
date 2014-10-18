@@ -26,7 +26,7 @@ var uniforms = {
   },
   texture: {
     type: "t",
-    value: THREE.ImageUtils.loadTexture("textures/reddit.png")
+    value: THREE.ImageUtils.loadTexture("textures/spark1.png")
   }
 };
 
@@ -68,7 +68,7 @@ function renderNodes(scene) {
       var idx = node.id * 3;
       var position = node.data.position;
 
-      sizes[idx] = 15;
+      sizes[node.id] = 20;
 
       points[idx] = position.x;
       points[idx + 1] = position.y;
