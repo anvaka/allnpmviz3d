@@ -60,6 +60,9 @@ function makeDist() {
   if (!fs.existsSync('./dist/data')) {
     fs.mkdirSync('./dist/data');
   }
+  if (!fs.existsSync('./dist/textures')) {
+    fs.mkdirSync('./dist/textures');
+  }
 }
 
 function copyDist() {
@@ -72,6 +75,8 @@ function copyDist() {
       .pipe(gulp.dest('./dist/fonts/'));
   gulp.src('./src/data/*')
       .pipe(gulp.dest('./dist/data'));
+  gulp.src('./src/textures/*')
+      .pipe(gulp.dest('./dist/textures'));
 }
 
 function watchChanges() {

@@ -1,10 +1,13 @@
 {
   "name": "allnpmviz3d",
   "scripts": {
-    "start": "gulp",
+    "start": "gulp -p 30131",
     "cover": "istanbul cover ./test/flatten.js",
     "testlocal": "zuul --local 8080 --ui tape -- ./test/*.js",
     "test": "zuul -- ./test/*.js"
+  },
+  "browserify": {
+    "transform": ["glslify"]
   },
   "devDependencies": {
     "zuul": "^1.5.4",
@@ -22,6 +25,7 @@
   "dependencies": {
     "an": "~0.0.2",
     "angular": "^1.2.10",
+    "glslify": "^1.6.0",
     "ngraph.events": "0.0.3",
     "ngraph.graph": "0.0.4",
     "three": "0.68",

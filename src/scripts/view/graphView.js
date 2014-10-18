@@ -23,7 +23,7 @@ function graphView(graphModel) {
   view.onrender(userInputController.update);
 
   graphModel.on('nodesReady', renderNodes(view.getScene()));
-  graphModel.on('linksReady', renderLinks(view.getScene()));
+  //graphModel.on('linksReady', renderLinks(view.getScene()));
 }
 
 function init3dView() {
