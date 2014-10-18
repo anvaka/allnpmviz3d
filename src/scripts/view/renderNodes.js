@@ -26,7 +26,7 @@ var uniforms = {
   },
   texture: {
     type: "t",
-    value: THREE.ImageUtils.loadTexture("textures/spark1.png")
+    value: THREE.ImageUtils.loadTexture("textures/reddit.png")
   }
 };
 
