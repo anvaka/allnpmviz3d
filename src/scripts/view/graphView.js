@@ -45,6 +45,7 @@ function init3dView() {
   renderer.setClearColor(0x000000, 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+  window.addEventListener('resize', onWindowResize, false);
 
   animate();
 
@@ -73,5 +74,13 @@ function init3dView() {
     for (var i = 0; i < renderCallbacks.length; ++i) {
       renderCallbacks[i](scene, camera);
     }
+  }
+
+  function onWindowResize() {
+    windowHalfX = window.innerWidth / 2;
+    windowHalfY = window.innerHeight / 2;
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
   }
 }
