@@ -39,7 +39,10 @@ function init3dView() {
 
   var renderCallbacks = [];
 
-  var renderer = new THREE.WebGLRenderer();
+  var renderer = new THREE.WebGLRenderer({
+    antialias: false
+  });
+  renderer.setClearColor(0x000000, 1);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
