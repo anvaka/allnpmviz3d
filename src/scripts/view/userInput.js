@@ -2,6 +2,7 @@
  * Handles mouse/keyboard input and transforms camera position accordingly
  */
 var FlyControls = require('three.fly');
+var eventify = require('ngraph.events');
 
 module.exports = createUserInputController;
 
@@ -12,15 +13,17 @@ function createUserInputController(camera) {
   controls.movementSpeed = 800;
   controls.rollSpeed = 1;
   controls.autoForward = false;
-  controls.dragToLook = true;
+  controls.dragToLook = false;
 
   var domElement = document.body;
 
   domElement.addEventListener('keydown', keydown, false);
-
-  return {
+  var controller = {
     update: update
   };
+  eventify(controller);
+
+  return controller;
 
   function update() {
     controls.update(clock.getDelta());
@@ -33,6 +36,7 @@ function createUserInputController(camera) {
       controls.moveState.yawLeft = 0;
       controls.moveState.pitchDown = 0;
       controls.updateRotationVector();
+      controller.fire('steeringModeChanged', controls.dragToLook);
     }
   }
 }

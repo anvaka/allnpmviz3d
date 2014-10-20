@@ -19,3 +19,28 @@ canvas {
   background: black;
   padding: 10px;
 }
+
+@crosshair-r: 100px;
+
+.steering {
+  position: absolute;
+  width: 2 * @crosshair-r;
+  height: 2 * @crosshair-r;
+  top: 50%;
+  left: 50%;
+  margin-left: -@crosshair-r;
+  margin-top: -@crosshair-r;
+  border-radius: 2 * @crosshair-r;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  .inner {
+    position: absolute;
+    width: @crosshair-r;
+    height: @crosshair-r;
+    top: 50%;
+    left: 50%;
+    margin-left: -@crosshair-r/2;
+    margin-top: -@crosshair-r/2;
+    border-radius: @crosshair-r;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+  }
+}

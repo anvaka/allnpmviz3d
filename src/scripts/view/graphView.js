@@ -18,12 +18,18 @@ function graphView(graphModel) {
   });
 
   var userInputController = createUserInputController(view.getCamera());
+  userInputController.on('steeringModeChanged', toggleSteeringIndicator);
 
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
 
   graphModel.on('nodesReady', renderNodes(view.getScene()));
-  //graphModel.on('linksReady', renderLinks(view.getScene()));
+  graphModel.on('linksReady', renderLinks(view.getScene()));
+
+  function toggleSteeringIndicator(isOn) {
+    var steering = document.querySelector('.steering');
+    steering.style.display = isOn ? 'none' : 'block' ;
+  }
 }
 
 function init3dView() {
