@@ -3,9 +3,9 @@ var createUserInputController = require('./userInput');
 var renderNodes = require('./renderNodes');
 var renderLinks = require('./renderLinks');
 
-module.exports = graphView;
+module.exports = sceneView;
 
-function graphView(graphModel) {
+function sceneView(graphModel) {
   var view = init3dView();
   var graph = graphModel.getGraph();
 
