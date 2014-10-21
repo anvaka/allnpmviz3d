@@ -18,9 +18,11 @@ function createUserInputController(camera) {
   var domElement = document.body;
 
   domElement.addEventListener('keydown', keydown, false);
+
   var controller = {
     update: update
   };
+
   eventify(controller);
 
   return controller;
@@ -31,12 +33,21 @@ function createUserInputController(camera) {
 
   function keydown(e) {
     if (e.which === 32) { // spacebar
-      controls.dragToLook = !controls.dragToLook;
-
-      controls.moveState.yawLeft = 0;
-      controls.moveState.pitchDown = 0;
-      controls.updateRotationVector();
-      controller.fire('steeringModeChanged', controls.dragToLook);
+      changeSteeringMode();
+    } else if (e.which === 76) { // l
+      controller.fire('toggleLinks');
+    } else if (e.which === 191) { // `/` key
+      controller.fire('focusSearch');
     }
+  }
+
+
+  function changeSteeringMode() {
+    controls.dragToLook = !controls.dragToLook;
+
+    controls.moveState.yawLeft = 0;
+    controls.moveState.pitchDown = 0;
+    controls.updateRotationVector();
+    controller.fire('steeringModeChanged', controls.dragToLook);
   }
 }

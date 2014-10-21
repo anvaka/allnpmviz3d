@@ -24,7 +24,7 @@ function graphView(graphModel) {
   view.onrender(userInputController.update);
 
   graphModel.on('nodesReady', renderNodes(view.getScene()));
-  graphModel.on('linksReady', renderLinks(view.getScene()));
+  graphModel.on('linksReady', renderLinks(view.getScene(), userInputController));
 
   function toggleSteeringIndicator(isOn) {
     var steering = document.querySelector('.steering');

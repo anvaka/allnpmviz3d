@@ -1,10 +1,11 @@
 module.exports = renderLinks;
 
-function renderLinks(scene) {
+function renderLinks(scene, controller) {
   return function(graphModel) {
     var graph = graphModel.getGraph();
 
     var linksCount = graph.getLinksCount();
+    var linksVisibe = true;
 
     var positions = new Float32Array(linksCount * 6);
     var colors = new Float32Array(linksCount * 6);
@@ -41,7 +42,19 @@ function renderLinks(scene) {
 
     geometry.computeBoundingSphere();
 
-    mesh = new THREE.Line(geometry, material, THREE.LinePieces);
+    var mesh = new THREE.Line(geometry, material, THREE.LinePieces);
     scene.add(mesh);
+
+    controller.on('toggleLinks', toggleLinks);
+
+    function toggleLinks() {
+      if (linksVisibe) {
+        scene.remove(mesh);
+      } else {
+        scene.add(mesh);
+      }
+
+      linksVisibe = !linksVisibe;
+    }
   };
 }
