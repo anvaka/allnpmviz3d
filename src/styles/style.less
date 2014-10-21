@@ -1,3 +1,5 @@
+@import "../../node_modules/twitter-bootstrap-3.0.0/less/bootstrap.less";
+
 body,
 html,
 canvas {
@@ -26,6 +28,7 @@ canvas {
   position: absolute;
   width: 2 * @crosshair-r;
   height: 2 * @crosshair-r;
+  z-index: 1;
   top: 50%;
   left: 50%;
   margin-left: -@crosshair-r;
@@ -62,4 +65,19 @@ canvas {
   input {
     width: 100%;
   }
+}
+
+.package-preview {
+  width: 350px;
+  bottom: 52px;
+  left: 31px;
+  position: absolute;
+  z-index: 1;
+  color: #ddd;
+  font-family: monospace;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.6)
+}
+.ng-cloak {
+  display: none !important;
 }

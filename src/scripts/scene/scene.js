@@ -1,3 +1,4 @@
+var eventify = require('ngraph.events');
 var createHitTest = require('./hitTest');
 var createUserInputController = require('./userInput');
 var renderNodes = require('./renderNodes');
@@ -8,12 +9,13 @@ module.exports = sceneView;
 function sceneView(graphModel) {
   var view = init3dView();
   var graph = graphModel.getGraph();
+  var api = eventify({});
 
   var hitTest = createHitTest();
   hitTest.onSelected(function(idx) {
     var node = graph.getNode(idx);
     if (node) {
-      console.log(node.data.label);
+      showPreview(node);
     }
   });
 
@@ -26,9 +28,30 @@ function sceneView(graphModel) {
   graphModel.on('nodesReady', renderNodes(view.getScene()));
   graphModel.on('linksReady', renderLinks(view.getScene(), userInputController));
 
+  return api;
+
   function toggleSteeringIndicator(isOn) {
     var steering = document.querySelector('.steering');
-    steering.style.display = isOn ? 'none' : 'block' ;
+    steering.style.display = isOn ? 'none' : 'block';
+  }
+
+  function showPreview(node) {
+    var dependencies = 0;
+    var dependents = 0;
+    node.links.forEach(calculateDependents);
+    api.fire('preview', {
+      name: node.data.label,
+      dependencies: dependencies,
+      dependents: dependents
+    });
+
+    function calculateDependents(link) {
+      if (link.fromId === node.id) {
+        dependencies += 1;
+      } else {
+        dependents += 1;
+      }
+    }
   }
 }
 

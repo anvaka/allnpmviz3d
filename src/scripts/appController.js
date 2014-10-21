@@ -8,5 +8,11 @@ require('an').controller(AppController);
 function AppController($scope, $http) {
   var graphModel = require('./graphModel')($http);
   var scene = require('./scene/scene')(graphModel);
+  scene.on('preview', showPreview);
+
+  function showPreview(node) {
+    $scope.package = node;
+    $scope.$digest();
+  }
 }
 

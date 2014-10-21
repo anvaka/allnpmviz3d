@@ -1,16 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html ng-controller='AppController'>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>Awesome website</title>
     <link rel="stylesheet" type="text/css" href="styles/style.css">
   </head>
-  <body ng-controller='AppController'>
-    <script src='bundle.js' type="text/javascript" charset="utf-8">
-    </script>
+  <body >
     <div class='steering'>
       <div class='inner'></div>
       <div class="steering-help">Press SPACE to deactivate steering mode</div>
     </div>
+    <div class="package-preview ng-cloak">
+      <h4>{{package.name}}</h4>
+      <div class="row">
+        <div class="col-md-4">Dependencies</div>
+        <div class="col-md-6">{{package.dependencies}}</div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">Dependents</div>
+        <div class="col-md-6">{{package.dependents}}</div>
+      </div>
+    </div>
+    <script src='bundle.js' type="text/javascript" charset="utf-8">
+    </script>
   </body>
 </html>
