@@ -7,6 +7,6 @@ require('an').controller(AppController);
 
 function AppController($scope, $http) {
   var graphModel = require('./graphModel')($http);
-  var graphView = require('./view/graphView')(graphModel);
+  var graphView = require('./scene/graphView')(graphModel);
 }
 
