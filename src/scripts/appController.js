@@ -10,9 +10,15 @@ function AppController($scope, $http) {
   var scene = require('./scene/scene')(graphModel);
   scene.on('preview', showPreview);
 
+  $scope.$on('search', search);
+
   function showPreview(node) {
     $scope.package = node;
     $scope.$digest();
+  }
+
+  function search(_, pattern){
+    scene.search(pattern);
   }
 }
 

@@ -11,6 +11,7 @@ function sceneView(graphModel) {
   var domElement = view.domElement;
   var graph = graphModel.getGraph();
   var api = eventify({});
+  api.search = search;
 
   var hitTest = createHitTest();
   hitTest.onSelected(function(idx) {
@@ -26,10 +27,24 @@ function sceneView(graphModel) {
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
 
-  graphModel.on('nodesReady', renderNodes(view.getScene()));
+  var nodeView = renderNodes(view.getScene());
+  graphModel.on('nodesReady', nodeView.initialize);
   graphModel.on('linksReady', renderLinks(view.getScene(), userInputController));
 
   return api;
+
+  function search(pattern) {
+    graph.forEachNode(function(node) {
+      var isMatch = pattern && node.data && node.data.label && node.data.label.match(pattern);
+      if (isMatch) {
+        nodeView.setNodeUI(node.id, 0xffffff, 25);
+      } else {
+        nodeView.setNodeUI(node.id, 0x000000, 15);
+      }
+    });
+
+    nodeView.refresh();
+  }
 
   function toggleSteeringIndicator(isOn) {
     var steering = document.querySelector('.steering');

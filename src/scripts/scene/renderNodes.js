@@ -1,4 +1,4 @@
-module.exports = renderNodes;
+module.exports = nodeView;
 
 var glslify = require('glslify');
 
@@ -40,18 +40,43 @@ var shaderMaterial = new THREE.ShaderMaterial({
   transparent: true
 });
 
-function renderNodes(scene) {
-  return function(graphModel) {
+function nodeView(scene) {
+  var points;
+  var colors;
+  var sizes;
+  var geometry;
+
+  return {
+    initialize: initialize,
+    setNodeUI: setNodeUI,
+    refresh: refresh
+  };
+
+  function refresh() {
+    geometry.getAttribute('customColor').needsUpdate = true;
+    geometry.getAttribute('size').needsUpdate = true;
+  }
+
+  function setNodeUI(nodeId, color, size) {
+    var idx = nodeId * 3;
+    colors[idx] = (color & 0xff0000) >> 16;
+    colors[idx + 1] = (color & 0x00ff00) >> 8;
+    colors[idx + 2] = color & 0xff;
+
+    sizes[nodeId] = size;
+  }
+
+  function initialize(graphModel) {
     var graph = graphModel.getGraph();
     var total = graph.getNodesCount();
 
-    var points = new Float32Array(total * 3);
-    var colors = new Float32Array(total * 3);
-    var sizes = new Float32Array(total);
+    points = new Float32Array(total * 3);
+    colors = new Float32Array(total * 3);
+    sizes = new Float32Array(total);
 
     graph.forEachNode(addToPointsArray);
 
-    var geometry = new THREE.BufferGeometry();
+    geometry = new THREE.BufferGeometry();
 
     geometry.addAttribute('position', new THREE.BufferAttribute(points, 3));
     geometry.addAttribute('customColor', new THREE.BufferAttribute(colors, 3));
@@ -79,5 +104,5 @@ function renderNodes(scene) {
       colors[idx + 1] = 0xff;
       colors[idx + 2] = 0xff;
     }
-  };
+  }
 }
