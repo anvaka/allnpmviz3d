@@ -15,7 +15,7 @@ function createUserInputController(camera, domElement) {
   controls.movementSpeed = 800;
   controls.rollSpeed = 1;
   controls.autoForward = false;
-  controls.dragToLook = false;
+  controls.dragToLook = true;
 
   domElement.addEventListener('keydown', keydown, false);
 

@@ -60,7 +60,7 @@ function init3dView() {
   var scene = new THREE.Scene();
   scene.sortObjects = false;
 
-  var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 20000);
+  var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
   camera.position.x = 0;
   camera.position.y = 0;
   camera.position.z = 0;

@@ -25,7 +25,9 @@ canvas {
 @crosshair-r: 100px;
 
 .steering {
+  display: none;
   position: absolute;
+  pointer-events: none;
   width: 2 * @crosshair-r;
   height: 2 * @crosshair-r;
   z-index: 1;
@@ -62,15 +64,18 @@ canvas {
   top: 12px;
   left: 12px;
   width: 200px;
+  z-index: 1;
   input {
     width: 100%;
+    background: #555;
+    color: white;
   }
 }
 
 .package-preview {
   width: 350px;
-  bottom: 52px;
-  left: 31px;
+  bottom: 12px;
+  left: 12px;
   position: absolute;
   z-index: 1;
   color: #ddd;
