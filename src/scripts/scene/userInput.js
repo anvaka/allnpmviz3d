@@ -6,16 +6,16 @@ var eventify = require('ngraph.events');
 
 module.exports = createUserInputController;
 
-function createUserInputController(camera) {
+function createUserInputController(camera, domElement) {
   var clock = new THREE.Clock();
 
-  controls = new FlyControls(camera);
+  controls = new FlyControls(camera, domElement);
+  domElement.tabIndex = 0;
+  domElement.focus();
   controls.movementSpeed = 800;
   controls.rollSpeed = 1;
   controls.autoForward = false;
   controls.dragToLook = false;
-
-  var domElement = document.body;
 
   domElement.addEventListener('keydown', keydown, false);
 

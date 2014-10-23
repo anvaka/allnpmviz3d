@@ -8,6 +8,7 @@ module.exports = sceneView;
 
 function sceneView(graphModel) {
   var view = init3dView();
+  var domElement = view.domElement;
   var graph = graphModel.getGraph();
   var api = eventify({});
 
@@ -19,7 +20,7 @@ function sceneView(graphModel) {
     }
   });
 
-  var userInputController = createUserInputController(view.getCamera());
+  var userInputController = createUserInputController(view.getCamera(), domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
 
   view.onrender(hitTest.update);
@@ -81,7 +82,8 @@ function init3dView() {
   return {
     onrender: onrender,
     getScene: getScene,
-    getCamera: getCamera
+    getCamera: getCamera,
+    domElement: renderer.domElement
   };
 
   function onrender(callback) {
