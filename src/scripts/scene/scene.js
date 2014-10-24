@@ -1,7 +1,7 @@
 var eventify = require('ngraph.events');
 var createHitTest = require('./hitTest');
 var createUserInputController = require('./userInput');
-var renderNodes = require('./renderNodes');
+var createNodeView = require('./nodeView');
 var renderLinks = require('./renderLinks');
 
 module.exports = sceneView;
