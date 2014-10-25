@@ -2,7 +2,7 @@ module.exports = renderLinks;
 
 function renderLinks(scene) {
   var linksVisibe = true;
-  var mesh;
+  var linkMesh;
 
   var api = {
     initialize: initialize,
@@ -51,15 +51,15 @@ function renderLinks(scene) {
 
     geometry.computeBoundingSphere();
 
-    mesh = new THREE.Line(geometry, material, THREE.LinePieces);
-    scene.add(mesh);
+    linkMesh = new THREE.Line(geometry, material, THREE.LinePieces);
+    scene.add(linkMesh);
   }
 
   function toggleLinks() {
     if (linksVisibe) {
-      scene.remove(mesh);
+      scene.remove(linkMesh);
     } else {
-      scene.add(mesh);
+      scene.add(linkMesh);
     }
 
     linksVisibe = !linksVisibe;
