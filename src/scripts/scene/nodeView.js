@@ -7,6 +7,7 @@ function nodeView(scene) {
   var colors;
   var sizes;
   var geometry;
+  var particleSystem;
 
   return {
     initialize: initialize,
@@ -44,9 +45,11 @@ function nodeView(scene) {
     geometry.addAttribute('customColor', new THREE.BufferAttribute(colors, 3));
     geometry.addAttribute('size', new THREE.BufferAttribute(sizes, 1));
 
-    geometry.computeBoundingSphere();
+    if (particleSystem) {
+      scene.remove(particleSystem);
+    }
 
-    var particleSystem = new THREE.PointCloud(geometry, particleMaterial);
+    particleSystem = new THREE.PointCloud(geometry, particleMaterial);
     particleSystem.name = 'nodes';
 
     scene.add(particleSystem);
