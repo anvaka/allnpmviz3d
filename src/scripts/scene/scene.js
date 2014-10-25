@@ -2,7 +2,7 @@ var eventify = require('ngraph.events');
 var createHitTest = require('./hitTest');
 var createUserInputController = require('./userInput');
 var createNodeView = require('./nodeView');
-var renderLinks = require('./renderLinks');
+var createLinkView = require('./linkView');
 
 module.exports = sceneView;
 
@@ -27,9 +27,11 @@ function sceneView(graphModel) {
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
 
-  var nodeView = renderNodes(view.getScene());
+  var nodeView = createNodeView(view.getScene());
+  var linkView = createLinkView(view.getScene(), userInputController);
+
   graphModel.on('nodesReady', nodeView.initialize);
-  graphModel.on('linksReady', renderLinks(view.getScene(), userInputController));
+  graphModel.on('linksReady', linkView);
 
   return api;
 
