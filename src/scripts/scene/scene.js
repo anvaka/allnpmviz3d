@@ -8,7 +8,9 @@ module.exports = sceneView;
 
 function sceneView(graphModel) {
   var view = init3dView();
-  var domElement = view.domElement;
+  var nodeView = createNodeView(view.getScene());
+  var linkView = createLinkView(view.getScene());
+
   var graph = graphModel.getGraph();
   var api = eventify({});
   api.search = search;
@@ -21,17 +23,15 @@ function sceneView(graphModel) {
     }
   });
 
-  var userInputController = createUserInputController(view.getCamera(), domElement);
+  var userInputController = createUserInputController(view.getCamera(), view.domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
+  userInputController.on('toggleLinks', linkView.toggleLinks);
 
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
 
-  var nodeView = createNodeView(view.getScene());
-  var linkView = createLinkView(view.getScene(), userInputController);
-
   graphModel.on('nodesReady', nodeView.initialize);
-  graphModel.on('linksReady', linkView);
+  graphModel.on('linksReady', linkView.initialize);
 
   return api;
 
