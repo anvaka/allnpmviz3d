@@ -1,44 +1,6 @@
 module.exports = nodeView;
 
-var glslify = require('glslify');
-
-var myShader = glslify({
-  vertex: './node-vertex.glsl',
-  fragment: './node-fragment.glsl',
-  sourceOnly: true
-});
-
-var attributes = {
-  size: {
-    type: 'f',
-    value: null
-  },
-  customColor: {
-    type: 'c',
-    value: null
-  }
-};
-
-var uniforms = {
-  color: {
-    type: "c",
-    value: new THREE.Color(0xffffff)
-  },
-  texture: {
-    type: "t",
-    value: THREE.ImageUtils.loadTexture("textures/circle.png")
-  }
-};
-
-var shaderMaterial = new THREE.ShaderMaterial({
-  uniforms: uniforms,
-  attributes: attributes,
-  vertexShader: myShader.vertex,
-  fragmentShader: myShader.fragment,
-  blending: THREE.AdditiveBlending,
-  depthTest: false,
-  transparent: true
-});
+var particleMaterial = createParticleMaterial();
 
 function nodeView(scene) {
   var points;
@@ -84,7 +46,7 @@ function nodeView(scene) {
 
     geometry.computeBoundingSphere();
 
-    var particleSystem = new THREE.PointCloud(geometry, shaderMaterial);
+    var particleSystem = new THREE.PointCloud(geometry, particleMaterial);
     particleSystem.name = 'nodes';
 
     scene.add(particleSystem);
@@ -105,4 +67,46 @@ function nodeView(scene) {
       colors[idx + 2] = 0xff;
     }
   }
+}
+
+function createParticleMaterial() {
+  var glslify = require('glslify');
+
+  var particleShader = glslify({
+    vertex: './node-vertex.glsl',
+    fragment: './node-fragment.glsl',
+    sourceOnly: true
+  });
+
+  var attributes = {
+    size: {
+      type: 'f',
+      value: null
+    },
+    customColor: {
+      type: 'c',
+      value: null
+    }
+  };
+
+  var uniforms = {
+    color: {
+      type: "c",
+      value: new THREE.Color(0xffffff)
+    },
+    texture: {
+      type: "t",
+      value: THREE.ImageUtils.loadTexture("textures/circle.png")
+    }
+  };
+
+  return new THREE.ShaderMaterial({
+    uniforms: uniforms,
+    attributes: attributes,
+    vertexShader: particleShader.vertex,
+    fragmentShader: particleShader.fragment,
+    blending: THREE.AdditiveBlending,
+    depthTest: false,
+    transparent: true
+  });
 }
