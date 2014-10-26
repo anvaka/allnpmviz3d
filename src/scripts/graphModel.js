@@ -3,6 +3,7 @@ var createGraph = require('ngraph.graph');
 
 module.exports = function($http, $q) {
   var graph = createGraph();
+  var filteredGraph = graph;
 
   $http.get('data/positions.bin', {
     responseType: "arraybuffer"
@@ -16,7 +17,26 @@ module.exports = function($http, $q) {
 
   var model = {
     getGraph: function getGraph() {
-      return graph;
+      return filteredGraph;
+    },
+
+    filter: function(pattern) {
+      if (!pattern) {
+        filteredGraph = graph;
+        return;
+      }
+
+      filteredGraph = createGraph();
+
+      var rNameMatch = new RegExp(pattern, 'ig');
+      var idx = 0;
+      graph.forEachNode(function(node) {
+        var isMatch = node.data && node.data.label && node.data.label.match(rNameMatch);
+        if (isMatch) {
+          filteredGraph.addNode(idx, node.data);
+          idx += 1;
+        }
+      });
     }
   };
 

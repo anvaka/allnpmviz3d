@@ -11,13 +11,12 @@ function sceneView(graphModel) {
   var nodeView = createNodeView(view.getScene());
   var linkView = createLinkView(view.getScene());
 
-  var graph = graphModel.getGraph();
   var api = eventify({});
   api.search = search;
 
   var hitTest = createHitTest();
   hitTest.onSelected(function(idx) {
-    var node = graph.getNode(idx);
+    var node = graphModel.getGraph().getNode(idx);
     if (node) {
       showPreview(node);
     }
@@ -36,16 +35,9 @@ function sceneView(graphModel) {
   return api;
 
   function search(pattern) {
-    graph.forEachNode(function(node) {
-      var isMatch = pattern && node.data && node.data.label && node.data.label.match(pattern);
-      if (isMatch) {
-        nodeView.setNodeUI(node.id, 0xffffff, 25);
-      } else {
-        nodeView.setNodeUI(node.id, 0x000000, 15);
-      }
-    });
-
-    nodeView.refresh();
+    graphModel.filter(pattern);
+    nodeView.initialize(graphModel);
+    hitTest.reset();
   }
 
   function toggleSteeringIndicator(isOn) {
