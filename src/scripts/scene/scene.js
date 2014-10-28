@@ -90,7 +90,7 @@ function init3dView() {
   camera.position.x = 0;
   camera.position.y = 0;
   camera.position.z = 0;
-  camera.lookAt(new THREE.Vector3(9000, 9000, 9000));
+  camera.lookAt(new THREE.Vector3(-9000, -9000, 9000));
   window.camera = camera;
 
   var renderCallbacks = [];
