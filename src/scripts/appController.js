@@ -11,6 +11,7 @@ function AppController($scope, $http) {
   scene.on('preview', showPreview);
 
   $scope.$on('search', search);
+  $scope.$on('focusScene', scene.focus);
 
   function showPreview(node) {
     $scope.package = node;

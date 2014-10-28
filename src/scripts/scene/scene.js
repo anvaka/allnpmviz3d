@@ -11,8 +11,10 @@ function sceneView(graphModel) {
   var nodeView = createNodeView(view.getScene());
   var linkView = createLinkView(view.getScene());
 
-  var api = eventify({});
-  api.search = search;
+  var api = eventify({
+    search: search,
+    focus: focus
+  });
 
   var hitTest = createHitTest();
   hitTest.onSelected(function(idx) {
@@ -39,12 +41,12 @@ function sceneView(graphModel) {
 
   function adjustNodeSize(model) {
     var graph = model.getGraph();
-    graph.forEachNode(function (node) {
+    graph.forEachNode(function(node) {
       var outCount = 0;
-      node.links.forEach(function (link) {
+      node.links.forEach(function(link) {
         if (link.toId === node.id) outCount += 1;
       });
-      var size = (100/7402) * outCount + 15;
+      var size = (100 / 7402) * outCount + 15;
       nodeView.setNodeUI(node.id, 0xffffff, size);
     });
     nodeView.refresh();
@@ -55,6 +57,14 @@ function sceneView(graphModel) {
     nodeView.initialize(graphModel);
     adjustNodeSize(graphModel);
     hitTest.reset();
+  }
+
+  function focus() {
+    if (view.domElement) {
+      setTimeout(function() {
+        view.domElement.focus();
+      }, 0);
+    }
   }
 
   function toggleSteeringIndicator(isOn) {
