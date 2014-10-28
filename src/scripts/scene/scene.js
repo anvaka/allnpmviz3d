@@ -30,13 +30,30 @@ function sceneView(graphModel) {
   view.onrender(userInputController.update);
 
   graphModel.on('nodesReady', nodeView.initialize);
-  graphModel.on('linksReady', linkView.initialize);
+  graphModel.on('linksReady', function(graphModel) {
+    linkView.initialize(graphModel);
+    adjustNodeSize(graphModel);
+  });
 
   return api;
+
+  function adjustNodeSize(model) {
+    var graph = model.getGraph();
+    graph.forEachNode(function (node) {
+      var outCount = 0;
+      node.links.forEach(function (link) {
+        if (link.toId === node.id) outCount += 1;
+      });
+      var size = (100/7402) * outCount + 15;
+      nodeView.setNodeUI(node.id, 0xffffff, size);
+    });
+    nodeView.refresh();
+  }
 
   function search(pattern) {
     graphModel.filter(pattern);
     nodeView.initialize(graphModel);
+    adjustNodeSize(graphModel);
     hitTest.reset();
   }
 
