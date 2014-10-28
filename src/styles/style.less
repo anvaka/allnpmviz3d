@@ -8,7 +8,7 @@ canvas {
   height: 100%;
   overflow: hidden;
   padding: 0;
-  margin: 0; 
+  margin: 0;
 }
 
 .message {
@@ -67,8 +67,28 @@ canvas {
   z-index: 1;
   input {
     width: 100%;
-    background: #555;
+    background: rgba(26, 26, 26, 0.5);
     color: white;
+    border-radius: 0;
+    border: 0
+  }
+  border: 1px solid #808080;
+  &:hover {
+    border-color: white;
+    button.btn {
+      background: #66afe9;
+    }
+  }
+  &.focused {
+    border-color: white;
+    button.btn {
+      background: #66afe9;
+    }
+  }
+  button.btn {
+    color: white;
+    border-radius: 0;
+    background: #808080;
   }
 }
 
