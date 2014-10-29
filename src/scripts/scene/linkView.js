@@ -1,15 +1,31 @@
 module.exports = renderLinks;
 
 function renderLinks(scene) {
-  var linksVisibe = true;
+  var linksVisible = true;
   var linkMesh;
 
   var api = {
     initialize: initialize,
-    toggleLinks: toggleLinks
+    toggleLinks: toggleLinks,
+    linksVisible: setOrGetLinksVisible
   };
 
   return api;
+
+  function setOrGetLinksVisible(newValue) {
+    if (newValue === undefined) {
+      return linksVisible;
+    }
+
+    if (newValue) {
+      scene.add(linkMesh);
+    } else {
+      scene.remove(linkMesh);
+    }
+
+    linksVisible = newValue;
+    return linksVisible;
+  }
 
   function initialize(graphModel) {
     var graph = graphModel.getGraph();
@@ -56,12 +72,6 @@ function renderLinks(scene) {
   }
 
   function toggleLinks() {
-    if (linksVisibe) {
-      scene.remove(linkMesh);
-    } else {
-      scene.add(linkMesh);
-    }
-
-    linksVisibe = !linksVisibe;
+    setOrGetLinksVisible(!linksVisible);
   }
 }

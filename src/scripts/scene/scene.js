@@ -10,6 +10,7 @@ function sceneView(graphModel) {
   var view = init3dView();
   var nodeView = createNodeView(view.getScene());
   var linkView = createLinkView(view.getScene());
+  var shouldShowLinks = linkView.linksVisible();
 
   var api = eventify({
     search: search,
@@ -26,7 +27,9 @@ function sceneView(graphModel) {
 
   var userInputController = createUserInputController(view.getCamera(), view.domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
-  userInputController.on('toggleLinks', linkView.toggleLinks);
+  userInputController.on('toggleLinks', function () {
+    shouldShowLinks = linkView.toggleLinks();
+  });
 
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
@@ -55,6 +58,13 @@ function sceneView(graphModel) {
   function search(pattern) {
     graphModel.filter(pattern);
     nodeView.initialize(graphModel);
+    // we always hide links when graph is filtered. Restore links rendering
+    // settings only when graph is not filtered
+    if (pattern && shouldShowLinks) {
+      linkView.linksVisible(false);
+    } else if (!pattern) {
+      linkView.linksVisible(shouldShowLinks);
+    }
     adjustNodeSize(graphModel);
     hitTest.reset();
   }
