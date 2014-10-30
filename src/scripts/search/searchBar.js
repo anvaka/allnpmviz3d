@@ -1,4 +1,5 @@
 require('./controller');
+require('./whenScrolled');
 
 module.exports = require('an').directive('searchBar', searchBar);
 
@@ -6,7 +7,7 @@ var fs = require('fs');
 function searchBar() {
   return {
     scope: {
-      onPackageSelected: '='
+      allPackagesGraph: '='
     },
     restrict: 'E',
     template : fs.readFileSync(__dirname + '/searchBar.html', 'utf8')

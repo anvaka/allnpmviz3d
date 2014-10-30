@@ -10,6 +10,10 @@ function AppController($scope, $http) {
   var scene = require('./scene/scene')(graphModel);
   scene.on('preview', showPreview);
 
+  graphModel.on('labelsReady', function () {
+    $scope.allPackagesGraph = graphModel.getGraph();
+  });
+
   $scope.$on('search', search);
   $scope.$on('focusScene', scene.focus);
 

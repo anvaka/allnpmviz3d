@@ -28,11 +28,10 @@ module.exports = function($http, $q) {
 
       filteredGraph = createGraph();
 
-      var rNameMatch = new RegExp(pattern, 'ig');
+      var matcher = require('./search/matcher')(pattern);
       var idx = 0;
       graph.forEachNode(function(node) {
-        var isMatch = node.data && node.data.label && node.data.label.match(rNameMatch);
-        if (isMatch) {
+        if (matcher.isMatch(node.data)) {
           filteredGraph.addNode(idx, node.data);
           idx += 1;
         }
@@ -56,6 +55,7 @@ module.exports = function($http, $q) {
     labels.forEach(function(label, idx) {
       addToGraph(idx, 'label', label);
     });
+    model.fire('labelsReady', labels);
   }
 
   function addNodesToGraph(positions) {

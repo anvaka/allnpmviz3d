@@ -66,30 +66,39 @@ canvas {
   left: 12px;
   width: 275px;
   z-index: 1;
-  input {
-    width: 100%;
-    background: rgba(26, 26, 26, 0.5);
-    color: white;
-    border-radius: 0;
-    border: 0
-  }
-  border: 1px solid #808080;
-  &:hover {
-    border-color: white;
-    button.btn {
-      background: #66afe9;
+  ul {
+    max-height: 250px;
+    overflow-y: auto;
+    li {
+      height: 25px;
     }
   }
-  &.focused {
-    border-color: white;
-    button.btn {
-      background: #66afe9;
+  .search-form {
+    input {
+      width: 100%;
+      background: rgba(26, 26, 26, 0.5);
+      color: white;
+      border-radius: 0;
+      border: 0
     }
-  }
-  button.btn {
-    color: white;
-    border-radius: 0;
-    background: #808080;
+    border: 1px solid #808080;
+    &:hover {
+      border-color: white;
+      button.btn {
+        background: #66afe9;
+      }
+    }
+    &.focused {
+      border-color: white;
+      button.btn {
+        background: #66afe9;
+      }
+    }
+    button.btn {
+      color: white;
+      border-radius: 0;
+      background: #808080;
+    }
   }
 }
 
@@ -106,4 +115,8 @@ canvas {
 }
 .ng-cloak {
   display: none !important;
+}
+
+h4 {
+  font-family: 'PT Sans', sans-serif;
 }
