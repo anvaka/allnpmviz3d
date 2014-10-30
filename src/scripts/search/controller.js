@@ -1,5 +1,7 @@
 module.exports = require('an').controller('searchController', searchController);
 
+var pagify = require('./pagify');
+
 function searchController($scope) {
   // when graph model is done loading we will have graph instance set via
   // `allPackagesGraph` variable from scope
@@ -63,26 +65,8 @@ function searchController($scope) {
 
 }
 
-function pagify(collection, callback) {
-  var itemsPerPage = 20;
-  collection = collection || [];
-  lastPage = 0;
-
-  return {
-    nextPage: function() {
-      var totalItems = collection.length;
-      if (totalItems === 0) return;
-
-      var from = itemsPerPage * lastPage;
-      var to = Math.min((lastPage + 1) * itemsPerPage, totalItems);
-      if (to - from <= 0) return;
-
-      callback(collection.slice(from, to));
-      lastPage += 1;
-    }
-  };
-}
-
+// todo: maybe this should be a separate module? it could be used by graphModel
+// too to filter the graph...
 function getAllMatches(graph, pattern) {
   var allMatches = [];
   var matcher = require('./matcher')(pattern);
