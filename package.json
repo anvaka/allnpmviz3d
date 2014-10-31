@@ -31,7 +31,7 @@
     "angular": "^1.2.10",
     "glslify": "^1.6.0",
     "ngraph.events": "0.0.3",
-    "ngraph.graph": "0.0.4",
+    "ngraph.graph": "0.0.5",
     "three": "0.68",
     "three.fly": "0.0.0",
     "twitter-bootstrap-3.0.0": "^3.0.0"
