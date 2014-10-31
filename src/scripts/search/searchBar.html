@@ -12,7 +12,9 @@
     <h4><small>Found</small> {{totalMatches|number}} <small>packages</small></h4>
     <div class="scroll-wrapper">
       <ul when-scrolled="loadMore()">
-        <li ng-repeat="package in matchedPackages">{{package}}</li>
+        <li ng-repeat="package in matchedPackages">
+          <a href="#">{{package}}</a>
+        </li>
       </ul>
     </div>
   </div>
