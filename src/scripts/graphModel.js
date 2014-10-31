@@ -4,6 +4,7 @@ var createGraph = require('ngraph.graph');
 module.exports = function($http, $q) {
   var graph = createGraph();
   var filteredGraph = graph;
+  var labels;
 
   $http.get('data/positions.bin', {
     responseType: "arraybuffer"
@@ -18,6 +19,15 @@ module.exports = function($http, $q) {
   var model = {
     getGraph: function getGraph() {
       return filteredGraph;
+    },
+
+    getPackagePosition: function (packageName) {
+      if (!labels) return; // without labels we cannot do anything
+
+      var id = labels.indexOf(packageName);
+      if (id < 0) return; // there is no such package
+
+      return graph.getNode(id).data.position;
     },
 
     filter: function(pattern) {
@@ -51,7 +61,7 @@ module.exports = function($http, $q) {
   }
 
   function addLabelsToGraph(response) {
-    var labels = response.data;
+    labels = response.data;
     labels.forEach(function(label, idx) {
       addToGraph(idx, 'label', label);
     });

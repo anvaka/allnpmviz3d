@@ -13,7 +13,7 @@
     <div class="scroll-wrapper">
       <ul when-scrolled="loadMore()">
         <li ng-repeat="package in matchedPackages">
-          <a href="#">{{package}}</a>
+          <a href="#" ng-click='showDetails(package)'>{{package}}</a>
         </li>
       </ul>
     </div>

@@ -21,6 +21,10 @@ function searchController($scope) {
     $scope.$emit('focusScene');
   };
 
+  $scope.showDetails = function (packageName) {
+    $scope.$emit('focusOnPackage', packageName);
+  };
+
   // `allPackagesGraph` will be available only after we are done downloading
   // graph data. Need to monitor this event before search can become enabled
   $scope.$watch('allPackagesGraph', function(newValue, oldValue) {

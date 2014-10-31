@@ -10,22 +10,24 @@ function AppController($scope, $http) {
   var scene = require('./scene/scene')(graphModel);
   scene.on('preview', showPreview);
 
-  graphModel.on('labelsReady', function () {
+  graphModel.on('labelsReady', function() {
     $scope.allPackagesGraph = graphModel.getGraph();
   });
 
   $scope.$on('search', search);
   $scope.$on('focusScene', scene.focus);
+  $scope.$on('focusOnPackage', function(_, name) {
+    scene.focusOnPackage(name);
+  });
 
   function showPreview(node) {
     $scope.package = node;
     $scope.$digest();
   }
 
-  function search(_, pattern){
-    setTimeout(function () {
+  function search(_, pattern) {
+    setTimeout(function() {
       scene.search(pattern);
     }, 0);
   }
 }
-

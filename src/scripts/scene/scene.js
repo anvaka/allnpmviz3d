@@ -14,7 +14,8 @@ function sceneView(graphModel) {
 
   var api = eventify({
     search: search,
-    focus: focus
+    focus: focus,
+    focusOnPackage: focusOnPackage
   });
 
   var hitTest = createHitTest();
@@ -41,6 +42,16 @@ function sceneView(graphModel) {
   });
 
   return api;
+
+  function focusOnPackage(packageName) {
+    var pos = graphModel.getPackagePosition(packageName);
+    if (!pos) return; // we are missing data
+    var camera = view.getCamera();
+    camera.position.x = pos.x;
+    camera.position.y = pos.y;
+    camera.position.z = pos.z;
+    camera.translateZ(100);
+  }
 
   function adjustNodeSize(model) {
     var graph = model.getGraph();
