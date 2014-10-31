@@ -7,6 +7,9 @@ function searchController($scope) {
   // `allPackagesGraph` variable from scope
   var graph;
 
+  // we will throttle user input to increase responsiveness
+  var lastInputHandle;
+
   // since search is not started => no matches
   $scope.matchedPackages = [];
 
@@ -31,8 +34,17 @@ function searchController($scope) {
 
   // tell parents that search pattern is changed, update search results
   $scope.highlightMatches = function(searchPattern) {
-    $scope.$emit('search', searchPattern);
-    showMatches(graph, searchPattern);
+    if (lastInputHandle) clearTimeout(lastInputHandle);
+
+    lastInputHandle = setTimeout(function () {
+      // TODO: $emit is wrapped into `try/catch` which makes optimization impossible
+      // To avoid this scene controller schedules event handler on the next
+      // event loop cycle anyway, so it makes sense to remove $emit from here
+      $scope.$emit('search', searchPattern);
+      showMatches(graph, searchPattern);
+      prevTimeout = 0;
+      $scope.$digest();
+    }, 150);
   };
 
 

@@ -23,7 +23,9 @@ function AppController($scope, $http) {
   }
 
   function search(_, pattern){
-    scene.search(pattern);
+    setTimeout(function () {
+      scene.search(pattern);
+    }, 0);
   }
 }
 
