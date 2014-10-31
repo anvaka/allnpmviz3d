@@ -111,11 +111,11 @@ canvas {
         padding-left: 20px;
         line-height: 25px;
         white-space: nowrap;
-        &:hover {
+        &:hover,
+        &:focus{
           text-decoration:none;
           opacity: 1;
-          background:rgba(26, 26, 26, 0.95); 
-
+          background:rgba(26, 26, 26, 0.95);
         }
       }
     }
@@ -129,12 +129,7 @@ canvas {
       border: 0
     }
     border: 1px solid #808080;
-    &:hover {
-      border-color: white;
-      button.btn {
-        background: #66afe9;
-      }
-    }
+    &:hover,
     &.focused {
       border-color: white;
       button.btn {
