@@ -1,24 +1,19 @@
 <div class="search" ng-controller="searchController">
-  <form class="search-form"
-    role="search"
-    ng-class="{focused: hasFocus}"
-    ng-submit="looseFocus($event)">
+  <form class="search-form" role="search" ng-class="{focused: hasFocus}" ng-submit="looseFocus($event)">
     <div class="input-group">
-      <input type="text"
-            ng-focus="hasFocus = true" ng-blur="hasFocus = false"
-            ng-model="selectedPackage"
-            ng-change="highlightMatches(selectedPackage)"
-            class="form-control no-shadow"
-            placeholder="find packages">
+      <input type="text" ng-focus="hasFocus = true" ng-blur="hasFocus = false" ng-model="selectedPackage" ng-change="highlightMatches(selectedPackage)" class="form-control no-shadow" placeholder="find packages">
       <span class="input-group-btn">
-        <button class="btn" tabindex="-1" type="button"><span class="glyphicon glyphicon-search"></span></button>
+        <button class="btn" tabindex="-1" type="button"><span class="glyphicon glyphicon-search"></span>
+      </button>
       </span>
     </div>
   </form>
   <div class="search-results" ng-show="whenSearchInProgress">
     <h4><small>Found</small> {{totalMatches|number}} <small>packages</small></h4>
-    <ul when-scrolled="loadMore()">
-      <li ng-repeat="package in matchedPackages">{{package}}</li>
-    </ul>
+    <div class="scroll-wrapper">
+      <ul when-scrolled="loadMore()">
+        <li ng-repeat="package in matchedPackages">{{package}}</li>
+      </ul>
+    </div>
   </div>
 </div>
