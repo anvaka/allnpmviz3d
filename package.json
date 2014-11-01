@@ -34,6 +34,7 @@
     "ngraph.graph": "0.0.5",
     "three": "0.68",
     "three.fly": "0.0.0",
+    "tween.js": "^0.14.0",
     "twitter-bootstrap-3.0.0": "^3.0.0"
   }
 }
