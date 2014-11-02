@@ -93,9 +93,13 @@ function sceneView(graphModel) {
   }
 
   function showPreview(node) {
+    // todo: This violates SRP. Should this be in a separate module?
     var dependencies = 0;
     var dependents = 0;
+
+    node = graphModel.getNodeByName(node.data.label);
     node.links.forEach(calculateDependents);
+
     api.fire('preview', {
       name: node.data.label,
       dependencies: dependencies,

@@ -21,13 +21,11 @@ module.exports = function($http, $q) {
       return filteredGraph;
     },
 
-    getPackagePosition: function (packageName) {
-      if (!labels) return; // without labels we cannot do anything
+    getNodeByName: getNodeByName,
 
-      var id = labels.indexOf(packageName);
-      if (id < 0) return; // there is no such package
-
-      return graph.getNode(id).data.position;
+    getPackagePosition: function(packageName) {
+      var node = getNodeByName(packageName);
+      return node && node.data.position;
     },
 
     filter: function(pattern) {
@@ -52,6 +50,19 @@ module.exports = function($http, $q) {
   eventify(model);
 
   return model;
+
+  function getNodeByName(packageName) {
+    var id = packageNameToId(packageName);
+    if (id < 0) return;
+
+    return graph.getNode(id);
+  }
+
+  function packageNameToId(packageName) {
+    if (!labels) return -1; // without labels we cannot do anything
+    // doh O(n). Should I care?
+    return labels.indexOf(packageName);
+  }
 
   function downloadLinks() {
     $http.get('data/links.bin', {
