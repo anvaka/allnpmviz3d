@@ -1,6 +1,6 @@
 module.exports = require('an').controller('searchController', searchController);
 
-var appEvents = require('../eventBus');
+var appEvents = require('../events');
 var pagify = require('./pagify');
 
 function searchController($scope) {

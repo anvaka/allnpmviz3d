@@ -3,7 +3,7 @@ require('./search/searchBar');
 // dirty hack to get THREE.js into global namespace
 var THREE = window.THREE = require('three').THREE;
 
-var appEvents = require('./eventBus');
+var appEvents = require('./events');
 
 require('an').controller(AppController);
 
