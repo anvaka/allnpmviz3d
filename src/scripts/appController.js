@@ -17,7 +17,7 @@ function AppController($scope, $http) {
   });
 
   appEvents.on('search', scene.search);
-  $scope.$on('focusScene', scene.focus);
+  appEvents.on('focusScene', scene.focus);
   $scope.$on('focusOnPackage', function(_, name) {
     scene.focusOnPackage(name);
   });

@@ -81,6 +81,7 @@ function sceneView(graphModel) {
 
   function focus() {
     if (view.domElement) {
+      // always focus on next event cycle, to prevent race conditions
       setTimeout(function() {
         view.domElement.focus();
       }, 0);

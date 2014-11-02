@@ -19,11 +19,12 @@ function searchController($scope) {
 
   // let parent scope transfer focus to the scene
   $scope.looseFocus = function(e) {
-    $scope.$emit('focusScene');
+    appEvents.fire('focusScene');
   };
 
   $scope.showDetails = function (packageName) {
     $scope.$emit('focusOnPackage', packageName);
+    appEvents.fire('focusScene');
   };
 
   // `allPackagesGraph` will be available only after we are done downloading
