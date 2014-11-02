@@ -1,5 +1,6 @@
 module.exports = require('an').controller('searchController', searchController);
 
+var appEvents = require('../eventBus');
 var pagify = require('./pagify');
 
 function searchController($scope) {
@@ -41,13 +42,9 @@ function searchController($scope) {
     if (lastInputHandle) clearTimeout(lastInputHandle);
 
     lastInputHandle = setTimeout(function () {
-      // TODO: $emit is wrapped into `try/catch` which makes optimization impossible
-      // To avoid this scene controller schedules event handler on the next
-      // event loop cycle anyway, so it makes sense to remove $emit from here
-      $scope.$emit('search', searchPattern);
+      appEvents.fire('search', searchPattern);
       showMatches(graph, searchPattern);
       prevTimeout = 0;
-      $scope.$digest();
     }, 150);
   };
 
@@ -71,6 +68,7 @@ function searchController($scope) {
 
     // load first page
     $scope.loadMore();
+    $scope.$digest();
 
     function appendMatches(items) {
       for (var i = 0; i < items.length; ++i) {

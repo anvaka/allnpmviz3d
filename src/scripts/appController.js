@@ -3,6 +3,8 @@ require('./search/searchBar');
 // dirty hack to get THREE.js into global namespace
 var THREE = window.THREE = require('three').THREE;
 
+var appEvents = require('./eventBus');
+
 require('an').controller(AppController);
 
 function AppController($scope, $http) {
@@ -14,7 +16,7 @@ function AppController($scope, $http) {
     $scope.allPackagesGraph = graphModel.getGraph();
   });
 
-  $scope.$on('search', search);
+  appEvents.on('search', scene.search);
   $scope.$on('focusScene', scene.focus);
   $scope.$on('focusOnPackage', function(_, name) {
     scene.focusOnPackage(name);
@@ -23,11 +25,5 @@ function AppController($scope, $http) {
   function showPreview(node) {
     $scope.package = node;
     $scope.$digest();
-  }
-
-  function search(_, pattern) {
-    setTimeout(function() {
-      scene.search(pattern);
-    }, 0);
   }
 }
