@@ -59,8 +59,9 @@ function sceneView(graphModel) {
       y: pos.y,
       z: pos.z
     };
-    var spheredTo = intersect(from, to, 100);
-    new TWEEN.Tween(from, 1000).to(spheredTo).easing(TWEEN.Easing.Linear.None).onUpdate(function(pos) {
+    var distanceToCamera = 100;
+    var spheredTo = intersect(from, to, distanceToCamera);
+    new TWEEN.Tween(from).to(spheredTo, 400).easing(TWEEN.Easing.Linear.None).onUpdate(function(pos) {
       camera.position.x = this.x;
       camera.position.y = this.y;
       camera.position.z = this.z;
@@ -74,11 +75,11 @@ function sceneView(graphModel) {
       x: startRotation.x,
       y: startRotation.y,
       z: startRotation.z
-    }, 100).to({
+    }).to({
       x: endRotation.x,
       y: endRotation.y,
       z: endRotation.z
-    }).onUpdate(function() {
+    }, 300).onUpdate(function() {
       camera.rotation.x = this.x;
       camera.rotation.y = this.y;
       camera.rotation.z = this.z;
