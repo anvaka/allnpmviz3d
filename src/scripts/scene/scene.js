@@ -1,5 +1,6 @@
-var eventify = require('ngraph.events');
 var TWEEN = require('tween.js');
+var eventify = require('ngraph.events');
+var createAutoPilot = require('./autoPilot');
 var createHitTest = require('./hitTest');
 var createUserInputController = require('./userInput');
 var createNodeView = require('./nodeView');
@@ -12,6 +13,7 @@ function sceneView(graphModel) {
   var nodeView = createNodeView(view.getScene());
   var linkView = createLinkView(view.getScene());
   var shouldShowLinks = linkView.linksVisible();
+  var autoPilot = createAutoPilot(view.getCamera());
 
   var api = eventify({
     search: search,
@@ -47,57 +49,7 @@ function sceneView(graphModel) {
   function focusOnPackage(packageName) {
     var pos = graphModel.getPackagePosition(packageName);
     if (!pos) return; // we are missing data
-
-    var camera = view.getCamera();
-    var from = {
-      x: camera.position.x,
-      y: camera.position.y,
-      z: camera.position.z,
-    };
-    var to = {
-      x: pos.x,
-      y: pos.y,
-      z: pos.z
-    };
-    var distanceToCamera = 100;
-    var spheredTo = intersect(from, to, distanceToCamera);
-    new TWEEN.Tween(from).to(spheredTo, 400).easing(TWEEN.Easing.Linear.None).onUpdate(function(pos) {
-      camera.position.x = this.x;
-      camera.position.y = this.y;
-      camera.position.z = this.z;
-    }).start();
-
-    var startRotation = new THREE.Euler().copy(camera.rotation);
-    camera.lookAt(new THREE.Vector3(pos.x, pos.y, pos.z));
-    var endRotation = new THREE.Euler().copy(camera.rotation);
-    camera.rotation.copy(startRotation); // revert to original rotation
-    new TWEEN.Tween({
-      x: startRotation.x,
-      y: startRotation.y,
-      z: startRotation.z
-    }).to({
-      x: endRotation.x,
-      y: endRotation.y,
-      z: endRotation.z
-    }, 300).onUpdate(function() {
-      camera.rotation.x = this.x;
-      camera.rotation.y = this.y;
-      camera.rotation.z = this.z;
-    }).start();
-  }
-
-  function intersect(from, to, r) {
-    var dx = from.x - to.x;
-    var dy = from.y - to.y;
-    var dz = from.z - to.z;
-    var r1 = Math.sqrt(dx * dx + dy * dy + dz * dz);
-    var teta = Math.acos(dz / r1);
-    var phi = Math.atan2(dy, dx);
-    return {
-      x: r * Math.sin(teta) * Math.cos(phi) + to.x,
-      y: r * Math.sin(teta) * Math.sin(phi) + to.y,
-      z: r * Math.cos(teta) + to.z
-    };
+    autoPilot.flyTo(pos);
   }
 
   function adjustNodeSize(model) {
