@@ -66,6 +66,9 @@ function renderLinks(scene) {
     geometry.addAttribute('color', new THREE.BufferAttribute(colors, 3));
 
     geometry.computeBoundingSphere();
+    if (linkMesh) {
+      scene.remove(linkMesh);
+    }
 
     linkMesh = new THREE.Line(geometry, material, THREE.LinePieces);
     scene.add(linkMesh);
