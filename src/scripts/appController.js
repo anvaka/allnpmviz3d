@@ -18,12 +18,10 @@ function AppController($scope, $http) {
 
   appEvents.on('search', scene.search);
   appEvents.on('focusScene', scene.focus);
-  $scope.$on('focusOnPackage', function(_, name) {
-    scene.focusOnPackage(name);
-  });
+  appEvents.on('focusOnPackage',scene.focusOnPackage);
 
   function showPreview(node) {
     $scope.package = node;
-    $scope.$digest();
+    if (!$scope.$$phase) $scope.$digest();
   }
 }

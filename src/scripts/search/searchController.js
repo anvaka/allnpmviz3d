@@ -23,7 +23,7 @@ function searchController($scope) {
   };
 
   $scope.showDetails = function (packageName) {
-    $scope.$emit('focusOnPackage', packageName);
+    appEvents.fire('focusOnPackage', packageName);
     appEvents.fire('focusScene');
   };
 

@@ -25,7 +25,7 @@ function sceneView(graphModel) {
   hitTest.onSelected(function(idx) {
     var node = graphModel.getGraph().getNode(idx);
     if (node) {
-      showPreview(node);
+      showPreview(node.data.label);
     }
   });
 
@@ -50,6 +50,7 @@ function sceneView(graphModel) {
     var pos = graphModel.getPackagePosition(packageName);
     if (!pos) return; // we are missing data
     autoPilot.flyTo(pos);
+    showPreview(packageName);
   }
 
   function adjustNodeSize(model) {
@@ -93,16 +94,16 @@ function sceneView(graphModel) {
     steering.style.display = isOn ? 'none' : 'block';
   }
 
-  function showPreview(node) {
+  function showPreview(packageName) {
     // todo: This violates SRP. Should this be in a separate module?
     var dependencies = 0;
     var dependents = 0;
+    var node = graphModel.getNodeByName(packageName);
 
-    node = graphModel.getNodeByName(node.data.label);
     node.links.forEach(calculateDependents);
 
     api.fire('preview', {
-      name: node.data.label,
+      name: packageName,
       dependencies: dependencies,
       dependents: dependents
     });
