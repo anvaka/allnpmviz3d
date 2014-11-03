@@ -1,5 +1,6 @@
 var eventify = require('ngraph.events');
 var createGraph = require('ngraph.graph');
+var subgraph = require('./model/subgraph');
 
 module.exports = function($http, $q) {
   var graph = createGraph();
@@ -20,6 +21,8 @@ module.exports = function($http, $q) {
     getGraph: function getGraph() {
       return filteredGraph;
     },
+
+    filterSubgraph: filterSubgraph,
 
     getNodeByName: getNodeByName,
 
@@ -50,6 +53,12 @@ module.exports = function($http, $q) {
   eventify(model);
 
   return model;
+
+  function filterSubgraph(packageName) {
+    var id = packageNameToId(packageName);
+    if (id < 0) return;
+    filteredGraph = subgraph(graph, id);
+  }
 
   function getNodeByName(packageName) {
     var id = packageNameToId(packageName);

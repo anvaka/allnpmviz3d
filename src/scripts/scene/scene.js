@@ -17,6 +17,7 @@ function sceneView(graphModel) {
 
   var api = eventify({
     search: search,
+    subgraph: subgraph,
     focus: focus,
     focusOnPackage: focusOnPackage
   });
@@ -79,6 +80,13 @@ function sceneView(graphModel) {
       linkView.linksVisible(shouldShowLinks);
     }
     adjustNodeSize(graphModel);
+    hitTest.reset();
+  }
+
+  function subgraph(name) {
+    graphModel.filterSubgraph(name);
+    nodeView.initialize(graphModel);
+    nodeView.refresh();
     hitTest.reset();
   }
 

@@ -10,6 +10,7 @@ require('an').controller(AppController);
 function AppController($scope, $http) {
   var graphModel = require('./graphModel')($http);
   var scene = require('./scene/scene')(graphModel);
+
   scene.on('preview', showPreview);
 
   graphModel.on('labelsReady', function() {
@@ -19,6 +20,10 @@ function AppController($scope, $http) {
   appEvents.on('search', scene.search);
   appEvents.on('focusScene', scene.focus);
   appEvents.on('focusOnPackage',scene.focusOnPackage);
+
+  $scope.showSubgraph = function (packageName) {
+    scene.subgraph(packageName);
+  };
 
   function showPreview(node) {
     $scope.package = node;

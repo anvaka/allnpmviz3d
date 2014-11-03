@@ -14,7 +14,7 @@
     </div>
     <div class="package-preview ng-cloak">
       <div class="row col-md-6">
-        <h4 title='{{package.name}}'>{{package.name}}</h4>
+        <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
       </div>
       <div class="col-md-3">
         <div class="row">
@@ -24,7 +24,7 @@
       </div>
       <div class="col-md-3">
         <div class="row">
-          <h2>{{package.dependents | number}}</h2>
+          <a href='#' ng-click='showSubgraph(package.name)'><h2>{{package.dependents | number}}</h2></a>
         </div>
         <div class="row small">Dependents</div>
       </div>
