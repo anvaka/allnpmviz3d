@@ -13,7 +13,7 @@ function autoPilot(camera, distanceToCamera) {
     flyTo: flyTo
   };
 
-  function flyTo(to) {
+  function flyTo(to, done) {
     // copy camera's current position - we will be animating this value
     var from = {
       x: camera.position.x,
@@ -28,6 +28,9 @@ function autoPilot(camera, distanceToCamera) {
     new TWEEN.Tween(from).to(cameraEndPos, 400)
       .easing(TWEEN.Easing.Linear.None)
       .onUpdate(moveCamera)
+      .onComplete(function() {
+        if (typeof done === 'function') done();
+      })
       .start();
 
     // Also rotate camera while it flies to an object:

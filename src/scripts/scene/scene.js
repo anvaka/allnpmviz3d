@@ -21,7 +21,7 @@ function sceneView(graphModel) {
     focusOnPackage: focusOnPackage
   });
 
-  var hitTest = createHitTest();
+  var hitTest = createHitTest(view.domElement);
   hitTest.onSelected(function(idx) {
     var node = graphModel.getGraph().getNode(idx);
     if (node) {
@@ -49,8 +49,10 @@ function sceneView(graphModel) {
   function focusOnPackage(packageName) {
     var pos = graphModel.getPackagePosition(packageName);
     if (!pos) return; // we are missing data
-    autoPilot.flyTo(pos);
-    showPreview(packageName);
+    hitTest.postpone();
+    autoPilot.flyTo(pos, function done() {
+      showPreview(packageName);
+    });
   }
 
   function adjustNodeSize(model) {

@@ -3,7 +3,7 @@
  */
 module.exports = createHitTest;
 
-function createHitTest() {
+function createHitTest(domElement) {
   var mouse = {
     x: 0,
     y: 0
@@ -11,18 +11,27 @@ function createHitTest() {
   var selectedCallbacks = [];
   var particleSystem;
   var lastIntersected;
+  var postponed = false;
 
   var projector = new THREE.Projector();
   var raycaster = new THREE.Raycaster();
   raycaster.params.PointCloud.threshold = 10;
+  domElement = domElement || document.body;
 
-  document.addEventListener('mousemove', onDocumentMouseMove, false);
+  domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
   return {
     update: update,
     reset: reset,
-    onSelected: onSelected
+    onSelected: onSelected,
+    postpone: postpone
   };
+
+  function postpone () {
+    // postpone processing of hit testing until next mouse movement
+    // this gives opportunity to avoid race conditions.
+    postponed = true;
+  }
 
   function reset() {
     // this will happen when user filters nodes
@@ -36,9 +45,11 @@ function createHitTest() {
   function onDocumentMouseMove(e) {
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+    postponed = false; // mouse moved, we are free.
   }
 
   function update(scene, camera) {
+    if (postponed) return;
     if (!particleSystem) {
       scene.children.forEach(function(child) {
         if (child.name === 'nodes') {
