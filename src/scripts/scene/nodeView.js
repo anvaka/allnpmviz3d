@@ -12,6 +12,7 @@ function nodeView(scene) {
   return {
     initialize: initialize,
     setNodeUI: setNodeUI,
+    getBoundingSphere: getBoundingSphere,
     refresh: refresh
   };
 
@@ -27,6 +28,12 @@ function nodeView(scene) {
     colors[idx + 2] = color & 0xff;
 
     sizes[nodeId] = size;
+  }
+
+  function getBoundingSphere() {
+    if (!geometry) return;
+    geometry.computeBoundingSphere();
+    return geometry.boundingSphere;
   }
 
   function initialize(graphModel) {

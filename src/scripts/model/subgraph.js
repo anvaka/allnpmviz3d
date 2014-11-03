@@ -8,7 +8,9 @@ module.exports = function subgraph(sourceGraph, startNodeId) {
 
   sourceGraph.forEachLinkedNode(startNodeId, function (node, link) {
     if (link.toId === startNodeId) {
-      graph.addNode(id++, node.data);
+      var nodeId = id++;
+      graph.addNode(nodeId, node.data);
+      graph.addLink(nodeId, 0);
     }
   });
 

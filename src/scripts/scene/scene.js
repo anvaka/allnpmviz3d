@@ -87,6 +87,10 @@ function sceneView(graphModel) {
     graphModel.filterSubgraph(name);
     nodeView.initialize(graphModel);
     nodeView.refresh();
+
+    linkView.initialize(graphModel);
+    var sphere = nodeView.getBoundingSphere();
+    autoPilot.flyTo(sphere.center, sphere.radius * 1.5);
     hitTest.reset();
   }
 
