@@ -6,14 +6,17 @@ var TWEEN = require('tween.js');
 
 module.exports = autoPilot;
 
-function autoPilot(camera, distanceToCamera) {
-  distanceToCamera = typeof distanceToCamera === 'number' ? distanceToCamera : 100;
-
+function autoPilot(camera) {
   return {
     flyTo: flyTo
   };
 
-  function flyTo(to, done) {
+  function flyTo(to, done, distanceToCamera) {
+    if (typeof done === 'number') {
+      distanceToCamera = done;
+      done = undefined;
+    }
+    distanceToCamera = typeof distanceToCamera === 'number' ? distanceToCamera : 100;
     // copy camera's current position - we will be animating this value
     var from = {
       x: camera.position.x,
