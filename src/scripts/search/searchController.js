@@ -27,6 +27,10 @@ function searchController($scope) {
     appEvents.fire('focusScene');
   };
 
+  appEvents.on('hideSearch', function () {
+    $scope.whenSearchInProgress = false;
+  });
+
   // `allPackagesGraph` will be available only after we are done downloading
   // graph data. Need to monitor this event before search can become enabled
   $scope.$watch('allPackagesGraph', function(newValue, oldValue) {

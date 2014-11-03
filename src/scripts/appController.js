@@ -22,6 +22,7 @@ function AppController($scope, $http) {
   appEvents.on('focusOnPackage',scene.focusOnPackage);
 
   $scope.showSubgraph = function (packageName) {
+    appEvents.fire('hideSearch');
     scene.subgraph(packageName);
   };
 
