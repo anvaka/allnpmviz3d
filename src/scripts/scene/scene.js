@@ -107,30 +107,6 @@ function sceneView(graphModel) {
     steering.style.display = isOn ? 'none' : 'block';
   }
 
-  function showPreview(packageName) {
-    // todo: This violates SRP. Should this be in a separate module?
-    if (packageName === undefined) return; // no need to toggle full preview
-
-    var dependencies = 0;
-    var dependents = 0;
-    var node = graphModel.getNodeByName(packageName);
-
-    node.links.forEach(calculateDependents);
-
-    api.fire('preview', {
-      name: packageName,
-      dependencies: dependencies,
-      dependents: dependents
-    });
-
-    function calculateDependents(link) {
-      if (link.fromId === node.id) {
-        dependencies += 1;
-      } else {
-        dependents += 1;
-      }
-    }
-  }
 
   function handleNodeHover(e) {
     api.fire('show-node-tooltip', {
@@ -141,6 +117,10 @@ function sceneView(graphModel) {
 
   function handleNodeClick(e) {
     showPreview(getPackageNameFromIndex(e.nodeIndex));
+  }
+
+  function showPreview(name) {
+    api.fire('preview', name);
   }
 
   function handleNodeDblClick(e) {

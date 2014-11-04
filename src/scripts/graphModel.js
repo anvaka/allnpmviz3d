@@ -58,6 +58,7 @@ module.exports = function($http, $q) {
     var id = packageNameToId(packageName);
     if (id < 0) return;
     filteredGraph = subgraph(graph, id);
+    return filteredGraph;
   }
 
   function getNodeByName(packageName) {

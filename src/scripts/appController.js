@@ -21,23 +21,26 @@ function AppController($scope, $http) {
   appEvents.on('search', scene.search);
   appEvents.on('focusScene', scene.focus);
   appEvents.on('focusOnPackage', scene.focusOnPackage);
+  appEvents.on('subgraphRequested', showSubgraph);
 
-  $scope.showSubgraph = function(packageName) {
-    graphModel.filterSubgraph(packageName);
-    scene.subgraph(packageName); // todo: rename this to something else.
-    appEvents.fire('showDependencyGraph',{
-      name: packageName,
-      graph: graphModel.getGraph()
-    });
-  };
+  $scope.showSubgraph = showSubgraph;
 
   $scope.tooltip = {
     isVisible: false
   };
 
-  function showPreview(node) {
-    $scope.package = node;
-    if (!$scope.$$phase) $scope.$digest();
+  function showSubgraph(packageName) {
+    var filteredGraph = graphModel.filterSubgraph(packageName);
+    scene.subgraph(packageName); // todo: rename this to something else.
+
+    appEvents.fire('showDependencyGraph', {
+      name: packageName,
+      graph: filteredGraph
+    });
+
+    if (filteredGraph) {
+      showPreview(packageName);
+    }
   }
 
   function showNodeTooltip(tooltipInfo) {
@@ -51,5 +54,34 @@ function AppController($scope, $http) {
     }
 
     if (!$scope.$$phase) $scope.$digest();
+  }
+
+  function showPreview(packageName) {
+    // todo: This violates SRP. Should this be in a separate module?
+    if (packageName === undefined) return; // no need to toggle full preview
+
+    var dependencies = 0;
+    var dependents = 0;
+    var node = graphModel.getNodeByName(packageName);
+
+    if (!node) return; // no such package found
+
+    node.links.forEach(calculateDependents);
+
+    $scope.package = {
+      name: packageName,
+      dependencies: dependencies,
+      dependents: dependents
+    };
+
+    if (!$scope.$$phase) $scope.$digest();
+
+    function calculateDependents(link) {
+      if (link.fromId === node.id) {
+        dependencies += 1;
+      } else {
+        dependents += 1;
+      }
+    }
   }
 }

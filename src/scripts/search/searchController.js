@@ -20,8 +20,13 @@ function searchController($scope) {
   $scope.showSearchResults = false;
 
   // let parent scope transfer focus to the scene
-  $scope.looseFocus = function(e) {
+  $scope.formSubmitted = function(e) {
     appEvents.fire('focusScene');
+    if ($scope.selectedPackage && $scope.selectedPackage[0] === ':') {
+      var commandInput = $scope.selectedPackage;
+      var commandMatch = commandInput.match(/^:([^\s]+)(.+)?$/);
+      if (commandMatch) handleCommand(commandMatch[1], commandMatch[2]);
+    }
   };
 
   $scope.showDetails = function(packageName) {
@@ -45,6 +50,17 @@ function searchController($scope) {
   // tell parents that search pattern is changed, update search results
   $scope.searchPatternChanged = searchPatternChanged;
 
+  function handleCommand(command, args) {
+    if (command.match(/^d.*ts$/i) && args) { // Assume 'dependents'
+      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''));
+    } else {
+      // TODO: Implement more commands. This is supposed to be command mode, where users
+      // can enter complex filters.
+      // Ideas: `:help`, `:about`
+      console.log('This cool idea is not implemented yet');
+    }
+  }
+
   function searchPatternChanged(searchPattern) {
     $scope.showSearchResults = graph && searchPattern;
     if (!graph) return; // probably we are still loading...
@@ -56,9 +72,8 @@ function searchController($scope) {
     }
 
     if (searchPattern && searchPattern[0] === ':') {
-      // TODO: Implement me. This is supposed to be command mode, where users
-      // can enter complex filters.
-      console.log('This cool idea is not implemented yet');
+      $scope.showSearchResults = false; // this should be handled elsewhere
+      // this is command mode. It should be handled only when form is submitted
       return;
     }
 
@@ -79,11 +94,17 @@ function searchController($scope) {
     $scope.selectedPackage = ':dependents ' + e.name;
 
     var allMatches = [];
-    e.graph.forEachNode(function(node) {
-      if (node.data.label !== e.name) allMatches.push(node.data.label);
-    });
     var packageName = require('./simpleEscape')(e.name);
-    var header = createDependentsResultHeader(allMatches.length, packageName);
+    var header;
+    if (e.graph) {
+      e.graph.forEachNode(function(node) {
+        if (node.data.label !== e.name) allMatches.push(node.data.label);
+      });
+      header = createDependentsResultHeader(allMatches.length, packageName);
+    } else {
+      header = 'Could not find package ' + packageName;
+    }
+
     showMatches(allMatches, header);
   }
 
@@ -127,7 +148,7 @@ function createDependentsResultHeader(foundCount, packageName) {
   if (foundCount === 1) {
     return "1 <small>package depends on </small> " + packageName;
   } else if (foundCount === 0) {
-    return "<small>No packages depend on </small> "  + packageName;
+    return "<small>No packages depend on </small> " + packageName;
   } else {
     return "{{totalMatches|number}} <small>packages depend on </small> " + packageName;
   }

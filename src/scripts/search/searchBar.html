@@ -1,5 +1,5 @@
 <div class="search" ng-controller="searchController">
-  <form class="search-form" role="search" ng-class="{focused: hasFocus}" ng-submit="looseFocus($event)">
+  <form class="search-form" role="search" ng-class="{focused: hasFocus}" ng-submit="formSubmitted($event)">
     <div class="input-group">
       <input type="text" ng-focus="hasFocus = true" ng-blur="hasFocus = false" ng-model="selectedPackage" ng-change="searchPatternChanged(selectedPackage)" class="form-control no-shadow" placeholder="find packages">
       <span class="input-group-btn">
