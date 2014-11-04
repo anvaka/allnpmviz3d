@@ -24,14 +24,12 @@ function searchController($scope) {
     appEvents.fire('focusScene');
   };
 
-  $scope.showDetails = function (packageName) {
+  $scope.showDetails = function(packageName) {
     appEvents.fire('focusOnPackage', packageName);
     appEvents.fire('focusScene');
   };
 
-  appEvents.on('showDependencyGraph', function () {
-    $scope.showSearchResults = false;
-  });
+  appEvents.on('showDependencyGraph', showDependencyGraph);
 
   // `allPackagesGraph` will be available only after we are done downloading
   // graph data. Need to monitor this event before search can become enabled
@@ -45,38 +43,64 @@ function searchController($scope) {
   $scope.loadMore = function noop() {};
 
   // tell parents that search pattern is changed, update search results
-  $scope.highlightMatches = function(searchPattern) {
-    // we are throttling input here. No need to react to every keystroke:
-    if (lastInputHandle) clearTimeout(lastInputHandle);
+  $scope.searchPatternChanged = searchPatternChanged;
 
-    lastInputHandle = setTimeout(function () {
-      appEvents.fire('search', searchPattern);
-      showMatches(graph, searchPattern);
-      lastInputHandle = 0;
-    }, 150);
-  };
-
-  function showMatches(graph, pattern) {
-    $scope.showSearchResults = graph && pattern;
+  function searchPatternChanged(searchPattern) {
+    $scope.showSearchResults = graph && searchPattern;
     if (!graph) return; // probably we are still loading...
 
-    // load everything in memory
-    var allMatches = getAllMatches(graph, pattern);
+    // we are throttling input here. No need to react to every keystroke:
+    if (lastInputHandle) {
+      clearTimeout(lastInputHandle);
+      lastInputHandle = 0;
+    }
 
-    // and then gradually render it to DOM (e.g. when user scrolls the list)
+    if (searchPattern && searchPattern[0] === ':') {
+      // TODO: Implement me. This is supposed to be command mode, where users
+      // can enter complex filters.
+      console.log('This cool idea is not implemented yet');
+      return;
+    }
+
+    lastInputHandle = setTimeout(function() {
+      appEvents.fire('search', searchPattern);
+
+      $scope.showSearchResults = searchPattern;
+      var allMatches = getAllMatches(graph, searchPattern);
+      var header = createSearchResultsHeader(allMatches.length);
+      showMatches(allMatches, header);
+      lastInputHandle = 0;
+      if (!$scope.$$phase) $scope.$digest();
+    }, 150);
+  }
+
+  function showDependencyGraph(e) {
+    $scope.showSearchResults = true;
+    $scope.selectedPackage = ':dependents ' + e.name;
+
+    var allMatches = [];
+    e.graph.forEachNode(function(node) {
+      if (node.data.label !== e.name) allMatches.push(node.data.label);
+    });
+    var packageName = require('./simpleEscape')(e.name);
+    var header = createDependentsResultHeader(allMatches.length, packageName);
+    showMatches(allMatches, header);
+  }
+
+  function showMatches(allMatches, header) {
+    // Gradually render allMatches to DOM (e.g. when user scrolls the list)
     // but first, remove all items from array
     $scope.matchedPackages.length = 0;
 
     // let UI know how many packages we have
     $scope.totalMatches = allMatches.length;
-    $scope.header = createSearchResultsHeader(allMatches.length);
+    $scope.header = header;
 
     // loadMore will ask next page of items
     $scope.loadMore = pagify(allMatches, appendMatches).nextPage;
 
     // load first page
     $scope.loadMore();
-    $scope.$digest();
 
     function appendMatches(items) {
       for (var i = 0; i < items.length; ++i) {
@@ -95,7 +119,18 @@ function getAllMatches(graph, pattern) {
     if (matcher.isMatch(node.data)) allMatches.push(node.data.label);
   });
 
+  // TODO: could be a good idea to sort this
   return allMatches;
+}
+
+function createDependentsResultHeader(foundCount, packageName) {
+  if (foundCount === 1) {
+    return "1 <small>package depends on </small> " + packageName;
+  } else if (foundCount === 0) {
+    return "<small>No packages depend on </small> "  + packageName;
+  } else {
+    return "{{totalMatches|number}} <small>packages depend on </small> " + packageName;
+  }
 }
 
 function createSearchResultsHeader(foundCount) {
