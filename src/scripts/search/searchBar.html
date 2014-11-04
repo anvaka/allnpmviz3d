@@ -8,7 +8,7 @@
       </span>
     </div>
   </form>
-  <div class="search-results" ng-show="whenSearchInProgress">
+  <div class="search-results" ng-show="showSearchResults">
     <h4><small>Found</small> {{totalMatches|number}} <small>packages</small></h4>
     <div class="scroll-wrapper">
       <ul when-scrolled="loadMore()">

@@ -15,7 +15,7 @@ function searchController($scope) {
   $scope.matchedPackages = [];
 
   // we are not searching anything at the moment, hide search results:
-  $scope.whenSearchInProgress = false;
+  $scope.showSearchResults = false;
 
   // let parent scope transfer focus to the scene
   $scope.looseFocus = function(e) {
@@ -28,7 +28,7 @@ function searchController($scope) {
   };
 
   appEvents.on('hideSearch', function () {
-    $scope.whenSearchInProgress = false;
+    $scope.showSearchResults = false;
   });
 
   // `allPackagesGraph` will be available only after we are done downloading
@@ -44,18 +44,18 @@ function searchController($scope) {
 
   // tell parents that search pattern is changed, update search results
   $scope.highlightMatches = function(searchPattern) {
+    // we are throttling input here. No need to react to every keystroke:
     if (lastInputHandle) clearTimeout(lastInputHandle);
 
     lastInputHandle = setTimeout(function () {
       appEvents.fire('search', searchPattern);
       showMatches(graph, searchPattern);
-      prevTimeout = 0;
+      lastInputHandle = 0;
     }, 150);
   };
 
-
   function showMatches(graph, pattern) {
-    $scope.whenSearchInProgress = graph && pattern;
+    $scope.showSearchResults = graph && pattern;
     if (!graph) return; // probably we are still loading...
 
     // load everything in memory
@@ -81,7 +81,6 @@ function searchController($scope) {
       }
     }
   }
-
 }
 
 // todo: maybe this should be a separate module? it could be used by graphModel
