@@ -129,11 +129,11 @@ function sceneView(graphModel) {
     }
   }
 
-  function handleNodeHover(idx) {
+  function handleNodeHover(idx, isMouseDown) {
     if (idx === undefined) return; // no node under cursor
 
     var node = graphModel.getGraph().getNode(idx);
-    if (node) {
+    if (node && isMouseDown) {
       showPreview(node.data.label);
     }
   }

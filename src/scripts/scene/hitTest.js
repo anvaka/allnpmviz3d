@@ -23,8 +23,11 @@ function createHitTest(domElement) {
     x: 0,
     y: 0
   };
+  var isMouseDown = false;
 
-  domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+  domElement.addEventListener('mousemove', onMouseMove, false);
+  domElement.addEventListener('mousedown', onMouseDown, false);
+  domElement.addEventListener('mouseup', onMouseUp, false);
 
   var api = {
     /**
@@ -59,11 +62,16 @@ function createHitTest(domElement) {
     particleSystem = null;
   }
 
-  function onSelected(callback) {
-    selectedCallbacks.push(callback);
+  function onMouseUp(e) {
+    isMouseDown = false;
   }
 
-  function onDocumentMouseMove(e) {
+  function onMouseDown(e) {
+    isMouseDown = true;
+    notifySelected(lastIntersected);
+  }
+
+  function onMouseMove(e) {
     // todo: this should not depend on window
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
@@ -101,6 +109,6 @@ function createHitTest(domElement) {
   }
 
   function notifySelected(index) {
-    api.fire('nodeover', index);
+    api.fire('nodeover', index, isMouseDown);
   }
 }
