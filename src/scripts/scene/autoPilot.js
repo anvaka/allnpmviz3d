@@ -11,12 +11,12 @@ function autoPilot(camera) {
     flyTo: flyTo
   };
 
-  function flyTo(to, done, distanceToCamera) {
+  function flyTo(to, done, cameraOffset) {
     if (typeof done === 'number') {
-      distanceToCamera = done;
+      cameraOffset = done;
       done = undefined;
     }
-    distanceToCamera = typeof distanceToCamera === 'number' ? distanceToCamera : 100;
+    cameraOffset = typeof cameraOffset === 'number' ? cameraOffset : 100;
     // copy camera's current position - we will be animating this value
     var from = {
       x: camera.position.x,
@@ -25,7 +25,7 @@ function autoPilot(camera) {
     };
 
     // Camera needs to stop at given distance from target's center
-    var cameraEndPos = intersect(from, to, distanceToCamera);
+    var cameraEndPos = intersect(from, to, cameraOffset);
 
     // Move camera from its current position to target:
     new TWEEN.Tween(from).to(cameraEndPos, 400)
