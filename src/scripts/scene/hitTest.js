@@ -64,6 +64,7 @@ function createHitTest(domElement) {
   }
 
   function onDocumentMouseMove(e) {
+    // todo: this should not depend on window
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
     postponed = false; // mouse moved, we are free.
