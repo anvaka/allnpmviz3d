@@ -52,7 +52,9 @@ function searchController($scope) {
 
   function handleCommand(command, args) {
     if (command.match(/^d.*ts$/i) && args) { // Assume 'dependents'
-      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''));
+      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'dependents');
+    } else if (command.match(/^d.*es$/i) && args) {
+      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'dependencies');
     } else {
       // TODO: Implement more commands. This is supposed to be command mode, where users
       // can enter complex filters.
@@ -91,7 +93,13 @@ function searchController($scope) {
 
   function showDependencyGraph(e) {
     $scope.showSearchResults = true;
-    $scope.selectedPackage = ':dependents ' + e.name;
+    if (e.type === 'dependents') {
+      $scope.selectedPackage = ':dependents ' + e.name;
+    } else if (e.type === 'dependencies') {
+      $scope.selectedPackage = ':dependencies ' + e.name;
+    } else {
+      throw new Error('Unsupported subgraph type');
+    }
 
     var allMatches = [];
     var packageName = require('./simpleEscape')(e.name);
@@ -100,7 +108,11 @@ function searchController($scope) {
       e.graph.forEachNode(function(node) {
         if (node.data.label !== e.name) allMatches.push(node.data.label);
       });
-      header = createDependentsResultHeader(allMatches.length, packageName);
+      if (e.type === 'dependents') {
+        header = createDependentsResultHeader(allMatches.length, packageName);
+      } else {
+        header = createDependenciesResultHeader(allMatches.length, packageName);
+      }
     } else {
       header = 'Could not find package ' + packageName;
     }
@@ -151,6 +163,16 @@ function createDependentsResultHeader(foundCount, packageName) {
     return "<small>No packages depend on </small> " + packageName;
   } else {
     return "{{totalMatches|number}} <small>packages depend on </small> " + packageName;
+  }
+}
+
+function createDependenciesResultHeader(foundCount, packageName) {
+  if (foundCount === 1) {
+    return packageName + " <small>depends on </small> 1 <small>package</small>";
+  } else if (foundCount === 0) {
+    return packageName + "<small> does not have dependencies</small>";
+  } else {
+    return packageName + "<small> depends on</small> {{totalMatches|number}} <small>packages</small>";
   }
 }
 

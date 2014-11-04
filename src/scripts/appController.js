@@ -29,12 +29,13 @@ function AppController($scope, $http) {
     isVisible: false
   };
 
-  function showSubgraph(packageName) {
-    var filteredGraph = graphModel.filterSubgraph(packageName);
+  function showSubgraph(packageName, type) {
+    var filteredGraph = graphModel.filterSubgraph(packageName, type);
     scene.subgraph(packageName); // todo: rename this to something else.
 
     appEvents.fire('showDependencyGraph', {
       name: packageName,
+      type: type,
       graph: filteredGraph
     });
 

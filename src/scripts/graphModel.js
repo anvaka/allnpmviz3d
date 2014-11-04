@@ -54,10 +54,10 @@ module.exports = function($http, $q) {
 
   return model;
 
-  function filterSubgraph(packageName) {
+  function filterSubgraph(packageName, type) {
     var id = packageNameToId(packageName);
     if (id < 0) return;
-    filteredGraph = subgraph(graph, id);
+    filteredGraph = subgraph(graph, id, type);
     return filteredGraph;
   }
 

@@ -18,13 +18,13 @@
       </div>
       <div class="col-md-3">
         <div class="row">
-          <h2>{{package.dependencies | number}}</h2>
+          <a href='#' ng-click='showSubgraph(package.name, "dependencies")'><h2>{{package.dependencies | number}}</h2></a>
         </div>
         <div class="row small">Dependencies</div>
       </div>
       <div class="col-md-3">
         <div class="row">
-          <a href='#' ng-click='showSubgraph(package.name)'><h2>{{package.dependents | number}}</h2></a>
+          <a href='#' ng-click='showSubgraph(package.name, "dependents")'><h2>{{package.dependents | number}}</h2></a>
         </div>
         <div class="row small">Dependents</div>
       </div>
