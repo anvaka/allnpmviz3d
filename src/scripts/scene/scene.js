@@ -88,7 +88,7 @@ function sceneView(graphModel) {
     var sphere = nodeView.getBoundingSphere();
     var camera = view.getCamera();
 
-    var offset = sphere.radius / Math.tan(Math.PI / 180.0 * camera.fov * 0.5);
+    var offset = Math.max(sphere.radius, 100) / Math.tan(Math.PI / 180.0 * camera.fov * 0.5);
     autoPilot.flyTo(sphere.center, offset);
     hitTest.reset();
   }
