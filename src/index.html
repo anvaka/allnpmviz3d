@@ -30,7 +30,8 @@
       </div>
     </div>
     <div class="adhoc-tooltip ng-cloak"
-         ng-style="{left:tooltip.x, top:tooltip.y, display: toolitp.display}">{{tooltip.name}}</div>
+         ng-show="tooltip.isVisible"
+         ng-style="{left:tooltip.x, top:tooltip.y}">{{tooltip.name}}</div>
     <script src='bundle.js' type="text/javascript" charset="utf-8">
     </script>
   </body>

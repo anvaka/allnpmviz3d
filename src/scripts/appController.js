@@ -28,7 +28,7 @@ function AppController($scope, $http) {
   };
 
   $scope.tooltip = {
-    display: 'none'
+    isVisible: false
   };
 
   function showPreview(node) {
@@ -37,13 +37,13 @@ function AppController($scope, $http) {
   }
 
   function showNodeTooltip(tooltipInfo) {
-    if (tooltipInfo) {
+    if (tooltipInfo && tooltipInfo.name) {
       $scope.tooltip.name = tooltipInfo.name;
       $scope.tooltip.x = (tooltipInfo.mouse.x + 5) + 'px';
       $scope.tooltip.y = (tooltipInfo.mouse.y - 15) + 'px';
-      $scope.tooltip.display = 'block';
+      $scope.tooltip.isVisible = true;
     } else {
-      $scope.tooltip.display = 'none';
+      $scope.tooltip.isVisible = false;
     }
 
     if (!$scope.$$phase) $scope.$digest();

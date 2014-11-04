@@ -117,6 +117,7 @@ function sceneView(graphModel) {
       });
       return;
     }
+    if (packageName === undefined) return; // no need to toggle full preview
 
     var dependencies = 0;
     var dependents = 0;
