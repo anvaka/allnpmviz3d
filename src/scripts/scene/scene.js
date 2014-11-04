@@ -90,7 +90,10 @@ function sceneView(graphModel) {
 
     linkView.initialize(graphModel);
     var sphere = nodeView.getBoundingSphere();
-    autoPilot.flyTo(sphere.center, sphere.radius * 1.5);
+    var camera = view.getCamera();
+
+    var offset = sphere.radius / Math.tan(Math.PI / 180.0 * camera.fov * 0.5);
+    autoPilot.flyTo(sphere.center, offset);
     hitTest.reset();
   }
 
