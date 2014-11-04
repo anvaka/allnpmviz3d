@@ -106,8 +106,18 @@ function sceneView(graphModel) {
     steering.style.display = isOn ? 'none' : 'block';
   }
 
-  function showPreview(packageName) {
+  function showPreview(packageName, mouse) {
     // todo: This violates SRP. Should this be in a separate module?
+
+    var showLightTooltip = mouse && !mouse.down;
+    if (showLightTooltip) {
+      api.fire('show-node-tooltip', {
+        name: packageName,
+        mouse: mouse
+      });
+      return;
+    }
+
     var dependencies = 0;
     var dependents = 0;
     var node = graphModel.getNodeByName(packageName);
@@ -129,13 +139,14 @@ function sceneView(graphModel) {
     }
   }
 
-  function handleNodeHover(idx, isMouseDown) {
-    if (idx === undefined) return; // no node under cursor
-
-    var node = graphModel.getGraph().getNode(idx);
-    if (node && isMouseDown) {
-      showPreview(node.data.label);
+  function handleNodeHover(idx, mouse) {
+    var packageName;
+    if (idx !== undefined) {
+      var node = graphModel.getGraph().getNode(idx);
+      packageName = node && node.data.label;
     }
+
+    showPreview(packageName, mouse);
   }
 }
 

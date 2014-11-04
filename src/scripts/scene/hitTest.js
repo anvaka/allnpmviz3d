@@ -23,7 +23,13 @@ function createHitTest(domElement) {
     x: 0,
     y: 0
   };
-  var isMouseDown = false;
+
+  // store DOM coordinates as well, to let clients know where mouse is
+  var domMouse = {
+    down: false,
+    x: 0,
+    y: 0
+  };
 
   domElement.addEventListener('mousemove', onMouseMove, false);
   domElement.addEventListener('mousedown', onMouseDown, false);
@@ -63,11 +69,11 @@ function createHitTest(domElement) {
   }
 
   function onMouseUp(e) {
-    isMouseDown = false;
+    domMouse.down = false;
   }
 
   function onMouseDown(e) {
-    isMouseDown = true;
+    domMouse.down = true;
     notifySelected(lastIntersected);
   }
 
@@ -75,6 +81,10 @@ function createHitTest(domElement) {
     // todo: this should not depend on window
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+    domMouse.x = e.clientX;
+    domMouse.y = e.clientY;
+
     postponed = false; // mouse moved, we are free.
   }
 
@@ -109,6 +119,6 @@ function createHitTest(domElement) {
   }
 
   function notifySelected(index) {
-    api.fire('nodeover', index, isMouseDown);
+    api.fire('nodeover', index, domMouse);
   }
 }
