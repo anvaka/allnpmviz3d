@@ -65,16 +65,11 @@ function nodeView(scene) {
       var idx = node.id * 3;
       var position = node.data.position;
 
-      sizes[node.id] = 15;
-
       points[idx] = position.x;
       points[idx + 1] = position.y;
       points[idx + 2] = position.z;
 
-      // todo: should be easy to customize
-      colors[idx] = 0xff;
-      colors[idx + 1] = 0xff;
-      colors[idx + 2] = 0xff;
+      setNodeUI(node.id, 0xffffff, 15);
     }
   }
 }
