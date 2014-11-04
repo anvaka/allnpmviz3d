@@ -28,8 +28,10 @@ function createHitTest(domElement) {
   var domMouse = {
     down: false,
     x: 0,
-    y: 0
+    y: 0,
+    nodeIndex: undefined
   };
+  var singleClickHandler;
 
   domElement.addEventListener('mousemove', onMouseMove, false);
   domElement.addEventListener('mousedown', onMouseDown, false);
@@ -74,7 +76,25 @@ function createHitTest(domElement) {
 
   function onMouseDown(e) {
     domMouse.down = true;
-    notifySelected(lastIntersected);
+    domMouse.nodeIndex = lastIntersected;
+
+    if (singleClickHandler) {
+      // If we were able to get here without clearing single click handler,
+      // then we are dealing with double click.
+
+      // No need to fire single click event anymore:
+      window.clearTimeout(singleClickHandler);
+      singleClickHandler = null;
+
+      // fire double click instead:
+      api.fire('nodedblclick', domMouse);
+    } else {
+      // Wait some time before firing event. It can be a double click...
+      singleClickHandler = window.setTimeout(function() {
+        api.fire('nodeclick', domMouse);
+        singleClickHandler = undefined;
+      }, 300);
+    }
   }
 
   function onMouseMove(e) {
@@ -119,6 +139,7 @@ function createHitTest(domElement) {
   }
 
   function notifySelected(index) {
-    api.fire('nodeover', index, domMouse);
+    domMouse.nodeIndex = index;
+    api.fire('nodeover', domMouse);
   }
 }

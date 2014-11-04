@@ -24,6 +24,8 @@ function sceneView(graphModel) {
 
   var hitTest = createHitTest(view.domElement);
   hitTest.on('nodeover', handleNodeHover);
+  hitTest.on('nodeclick', handleNodeClick);
+  hitTest.on('nodedblclick', handleNodeDblClick);
 
   var userInputController = createUserInputController(view.getCamera(), view.domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
@@ -106,17 +108,8 @@ function sceneView(graphModel) {
     steering.style.display = isOn ? 'none' : 'block';
   }
 
-  function showPreview(packageName, mouse) {
+  function showPreview(packageName) {
     // todo: This violates SRP. Should this be in a separate module?
-
-    var showLightTooltip = mouse && !mouse.down;
-    if (showLightTooltip) {
-      api.fire('show-node-tooltip', {
-        name: packageName,
-        mouse: mouse
-      });
-      return;
-    }
     if (packageName === undefined) return; // no need to toggle full preview
 
     var dependencies = 0;
@@ -140,14 +133,26 @@ function sceneView(graphModel) {
     }
   }
 
-  function handleNodeHover(idx, mouse) {
-    var packageName;
+  function handleNodeHover(e) {
+    api.fire('show-node-tooltip', {
+      name: getPackageNameFromIndex(e.nodeIndex),
+      mouse: e
+    });
+  }
+
+  function handleNodeClick(e) {
+    showPreview(getPackageNameFromIndex(e.nodeIndex));
+  }
+
+  function handleNodeDblClick(e) {
+    focusOnPackage(getPackageNameFromIndex(e.nodeIndex));
+  }
+
+  function getPackageNameFromIndex(idx) {
     if (idx !== undefined) {
       var node = graphModel.getGraph().getNode(idx);
-      packageName = node && node.data.label;
+      return node && node.data.label;
     }
-
-    showPreview(packageName, mouse);
   }
 }
 
