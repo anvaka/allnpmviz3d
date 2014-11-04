@@ -1,33 +1,54 @@
 /**
  * Gives an index of a node under mouse coordinates
  */
+var eventify = require('ngraph.events');
+
 module.exports = createHitTest;
 
 function createHitTest(domElement) {
-  var mouse = {
-    x: 0,
-    y: 0
-  };
-  var selectedCallbacks = [];
   var particleSystem;
   var lastIntersected;
   var postponed = false;
 
   var projector = new THREE.Projector();
   var raycaster = new THREE.Raycaster();
+
+  // This defines sensitivity of raycaster.
+  // TODO: Should it depend on node size?
   raycaster.params.PointCloud.threshold = 10;
   domElement = domElement || document.body;
 
+  // we will store mouse coordinates here to process on next RAF event (`update()` method)
+  var mouse = {
+    x: 0,
+    y: 0
+  };
+
   domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
-  return {
+  var api = {
+    /**
+     * This should be called from RAF. Initiates process of hit test detection
+     */
     update: update,
+
+    /**
+     * Reset all caches. Most likely underlying scene changed
+     * too much.
+     */
     reset: reset,
-    onSelected: onSelected,
+
+    /**
+     * Hit tester should not emit events until mouse moved
+     */
     postpone: postpone
   };
 
-  function postpone () {
+  // let us publish events
+  eventify(api);
+  return api;
+
+  function postpone() {
     // postpone processing of hit testing until next mouse movement
     // this gives opportunity to avoid race conditions.
     postponed = true;
@@ -79,8 +100,6 @@ function createHitTest(domElement) {
   }
 
   function notifySelected(index) {
-    for (var i = 0; i < selectedCallbacks.length; ++i) {
-      selectedCallbacks[i](index);
-    }
+    api.fire('nodeover', index);
   }
 }

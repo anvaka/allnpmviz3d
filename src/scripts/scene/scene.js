@@ -23,7 +23,7 @@ function sceneView(graphModel) {
   });
 
   var hitTest = createHitTest(view.domElement);
-  hitTest.onSelected(handleNodeHover);
+  hitTest.on('nodeover', handleNodeHover);
 
   var userInputController = createUserInputController(view.getCamera(), view.domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
