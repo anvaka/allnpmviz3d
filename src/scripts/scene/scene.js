@@ -81,7 +81,6 @@ function sceneView(graphModel) {
   }
 
   function subgraph(name) {
-    graphModel.filterSubgraph(name);
     nodeView.initialize(graphModel);
     nodeView.refresh();
 

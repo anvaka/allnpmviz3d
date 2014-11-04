@@ -23,8 +23,12 @@ function AppController($scope, $http) {
   appEvents.on('focusOnPackage', scene.focusOnPackage);
 
   $scope.showSubgraph = function(packageName) {
-    appEvents.fire('hideSearch');
-    scene.subgraph(packageName);
+    graphModel.filterSubgraph(packageName);
+    scene.subgraph(packageName); // todo: rename this to something else.
+    appEvents.fire('showDependencyGraph',{
+      name: packageName,
+      graph: graphModel.getGraph()
+    });
   };
 
   $scope.tooltip = {

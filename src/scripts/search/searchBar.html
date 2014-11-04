@@ -9,7 +9,7 @@
     </div>
   </form>
   <div class="search-results" ng-show="showSearchResults">
-    <h4><small>Found</small> {{totalMatches|number}} <small>packages</small></h4>
+    <h4 dynamic='header'></h4>
     <div class="scroll-wrapper">
       <ul when-scrolled="loadMore()">
         <li ng-repeat="package in matchedPackages">

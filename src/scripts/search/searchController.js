@@ -1,3 +1,5 @@
+require('./dynamic');
+
 module.exports = require('an').controller('searchController', searchController);
 
 var appEvents = require('../events');
@@ -27,7 +29,7 @@ function searchController($scope) {
     appEvents.fire('focusScene');
   };
 
-  appEvents.on('hideSearch', function () {
+  appEvents.on('showDependencyGraph', function () {
     $scope.showSearchResults = false;
   });
 
@@ -67,6 +69,7 @@ function searchController($scope) {
 
     // let UI know how many packages we have
     $scope.totalMatches = allMatches.length;
+    $scope.header = createSearchResultsHeader(allMatches.length);
 
     // loadMore will ask next page of items
     $scope.loadMore = pagify(allMatches, appendMatches).nextPage;
@@ -93,4 +96,14 @@ function getAllMatches(graph, pattern) {
   });
 
   return allMatches;
+}
+
+function createSearchResultsHeader(foundCount) {
+  if (foundCount === 1) {
+    return "<small>Found</small> 1 <small>package</small>";
+  } else if (foundCount === 0) {
+    return "<small>No matches found</small>";
+  } else {
+    return "<small>Found</small> {{totalMatches|number}} <small>packages</small>";
+  }
 }
