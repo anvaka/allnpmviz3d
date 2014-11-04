@@ -49,7 +49,10 @@ function createHitTest(domElement) {
   }
 
   function update(scene, camera) {
+    // We need to stop processin any events until user moves mouse.
+    // this is to avoid race conditions between search field and scene
     if (postponed) return;
+
     if (!particleSystem) {
       scene.children.forEach(function(child) {
         if (child.name === 'nodes') {
@@ -69,6 +72,7 @@ function createHitTest(domElement) {
         notifySelected(lastIntersected);
       }
     } else if (typeof lastIntersected === 'number') {
+      // there is no node under mouse cursor. Let it know to UI:
       lastIntersected = undefined;
       notifySelected(undefined);
     }

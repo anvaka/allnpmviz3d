@@ -23,12 +23,7 @@ function sceneView(graphModel) {
   });
 
   var hitTest = createHitTest(view.domElement);
-  hitTest.onSelected(function(idx) {
-    var node = graphModel.getGraph().getNode(idx);
-    if (node) {
-      showPreview(node.data.label);
-    }
-  });
+  hitTest.onSelected(handleNodeHover);
 
   var userInputController = createUserInputController(view.getCamera(), view.domElement);
   userInputController.on('steeringModeChanged', toggleSteeringIndicator);
@@ -131,6 +126,15 @@ function sceneView(graphModel) {
       } else {
         dependents += 1;
       }
+    }
+  }
+
+  function handleNodeHover(idx) {
+    if (idx === undefined) return; // no node under cursor
+
+    var node = graphModel.getGraph().getNode(idx);
+    if (node) {
+      showPreview(node.data.label);
     }
   }
 }
