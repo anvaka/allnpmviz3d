@@ -1,3 +1,6 @@
+/**
+ * Manages how links appear on the scene
+ */
 module.exports = renderLinks;
 
 function renderLinks(scene) {
@@ -71,7 +74,9 @@ function renderLinks(scene) {
     }
 
     linkMesh = new THREE.Line(geometry, material, THREE.LinePieces);
-    scene.add(linkMesh);
+    if (linksVisible) {
+      scene.add(linkMesh);
+    }
   }
 
   function toggleLinks() {
