@@ -8,8 +8,18 @@ function renderLinks(scene) {
   var linkMesh;
 
   var api = {
-    initialize: initialize,
+    /**
+     * Renders links based on current graph model
+     */
+    render: render,
+    /**
+     * Turns links rendering on or off
+     */
     toggleLinks: toggleLinks,
+    /**
+     * Gets or sets links visibility. If you pass truthy argument
+     * sets visibility to that value. Othweris returns current visibility
+     */
     linksVisible: setOrGetLinksVisible
   };
 
@@ -30,7 +40,8 @@ function renderLinks(scene) {
     return linksVisible;
   }
 
-  function initialize(graphModel) {
+  function render(graphModel) {
+    // todo: do I need graph model here?
     var graph = graphModel.getGraph();
 
     var linksCount = graph.getLinksCount();

@@ -10,7 +10,10 @@ function nodeView(scene) {
   var particleSystem;
 
   return {
-    initialize: initialize,
+    /**
+     * renders nodes based on current graph model
+     */
+    render: render,
     setNodeUI: setNodeUI,
     getBoundingSphere: getBoundingSphere,
     refresh: refresh
@@ -36,7 +39,8 @@ function nodeView(scene) {
     return geometry.boundingSphere;
   }
 
-  function initialize(graphModel) {
+  function render(graphModel) {
+    // todo: do I need graph model here?
     var graph = graphModel.getGraph();
     var total = graph.getNodesCount();
 

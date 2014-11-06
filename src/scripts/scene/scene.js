@@ -36,9 +36,9 @@ function sceneView(graphModel) {
   view.onrender(hitTest.update);
   view.onrender(userInputController.update);
 
-  graphModel.on('nodesReady', nodeView.initialize);
+  graphModel.on('nodesReady', nodeView.render);
   graphModel.on('linksReady', function(graphModel) {
-    linkView.initialize(graphModel);
+    linkView.render(graphModel);
     adjustNodeSize(graphModel);
   });
 
@@ -68,7 +68,7 @@ function sceneView(graphModel) {
 
   function search(pattern) {
     graphModel.filter(pattern);
-    nodeView.initialize(graphModel);
+    nodeView.render(graphModel);
     // we always hide links when graph is filtered. Restore links rendering
     // settings only when graph is not filtered
     if (pattern && shouldShowLinks) {
@@ -81,10 +81,10 @@ function sceneView(graphModel) {
   }
 
   function subgraph(name) {
-    nodeView.initialize(graphModel);
+    nodeView.render(graphModel);
     nodeView.refresh();
 
-    linkView.initialize(graphModel);
+    linkView.render(graphModel);
     var sphere = nodeView.getBoundingSphere();
     var camera = view.getCamera();
 
