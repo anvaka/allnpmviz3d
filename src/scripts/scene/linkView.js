@@ -74,9 +74,7 @@ function renderLinks(scene) {
     }
 
     linkMesh = new THREE.Line(geometry, material, THREE.LinePieces);
-    if (linksVisible) {
-      scene.add(linkMesh);
-    }
+    scene.add(linkMesh);
   }
 
   function toggleLinks() {
