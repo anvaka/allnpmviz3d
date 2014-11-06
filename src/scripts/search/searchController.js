@@ -23,6 +23,8 @@ function searchController($scope) {
   $scope.formSubmitted = function(e) {
     appEvents.fire('focusScene');
     if ($scope.selectedPackage && $scope.selectedPackage[0] === ':') {
+      // command mode starts with colon and has a form of
+      // <command> <value>
       var commandInput = $scope.selectedPackage;
       var commandMatch = commandInput.match(/^:([^\s]+)(.+)?$/);
       if (commandMatch) handleCommand(commandMatch[1], commandMatch[2]);
@@ -51,10 +53,15 @@ function searchController($scope) {
   $scope.searchPatternChanged = searchPatternChanged;
 
   function handleCommand(command, args) {
+    // todo: simplify this
     if (command.match(/^d.*ts$/i) && args) { // Assume 'dependents'
       appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'dependents');
-    } else if (command.match(/^d.*es$/i) && args) {
+    } else if (command.match(/^d.*es$/i) && args) { // assume 'dependencies'
       appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'dependencies');
+    } else if (command.match(/^a(ll)?d.*ts$/i) && args) { // Assume 'alldependents'
+      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'alldependents');
+    } else if (command.match(/^a(ll)?d.*es$/i) && args) { // assume 'alldependencies'
+      appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'alldependencies');
     } else {
       // TODO: Implement more commands. This is supposed to be command mode, where users
       // can enter complex filters.
@@ -97,6 +104,10 @@ function searchController($scope) {
       $scope.selectedPackage = ':dependents ' + e.name;
     } else if (e.type === 'dependencies') {
       $scope.selectedPackage = ':dependencies ' + e.name;
+    } else if (e.type === 'alldependents') {
+      $scope.selectedPackage = ':alldependents ' + e.name;
+    } else if (e.type === 'alldependencies') {
+      $scope.selectedPackage = ':alldependencies ' + e.name;
     } else {
       throw new Error('Unsupported subgraph type');
     }
@@ -108,9 +119,9 @@ function searchController($scope) {
       e.graph.forEachNode(function(node) {
         if (node.data.label !== e.name) allMatches.push(node.data.label);
       });
-      if (e.type === 'dependents') {
+      if (e.type.match(/(all)?dependents/)) {
         header = createDependentsResultHeader(allMatches.length, packageName);
-      } else {
+      } else if (e.type.match(/(all)?dependencies/)){
         header = createDependenciesResultHeader(allMatches.length, packageName);
       }
     } else {
