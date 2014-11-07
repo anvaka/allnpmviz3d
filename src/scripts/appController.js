@@ -4,6 +4,7 @@ require('./search/searchBar');
 var THREE = window.THREE = require('three').THREE;
 
 var appEvents = require('./events');
+var getDependenciesInfo = require('./model/getDepsInfo');
 
 require('an').controller(AppController);
 
@@ -61,28 +62,17 @@ function AppController($scope, $http) {
     // todo: This violates SRP. Should this be in a separate module?
     if (packageName === undefined) return; // no need to toggle full preview
 
-    var dependencies = 0;
-    var dependents = 0;
     var node = graphModel.getNodeByName(packageName);
 
     if (!node) return; // no such package found
 
-    node.links.forEach(calculateDependents);
-
+    var depsInfo = getDependenciesInfo(node.id, node.links);
     $scope.package = {
       name: packageName,
-      dependencies: dependencies,
-      dependents: dependents
+      dependencies: depsInfo.dependencies,
+      dependents: depsInfo.dependents
     };
 
     if (!$scope.$$phase) $scope.$digest();
-
-    function calculateDependents(link) {
-      if (link.fromId === node.id) {
-        dependencies += 1;
-      } else {
-        dependents += 1;
-      }
-    }
   }
 }
