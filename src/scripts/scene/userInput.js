@@ -17,7 +17,8 @@ function createUserInputController(camera, domElement) {
   controls.autoForward = false;
   controls.dragToLook = true;
 
-  domElement.addEventListener('keydown', keydown, false);
+  // we want to listen on document level, since focus can be anywhere
+  window.document.addEventListener('keydown', keydown, false);
 
   var controller = {
     update: update
@@ -32,6 +33,11 @@ function createUserInputController(camera, domElement) {
   }
 
   function keydown(e) {
+    var target = e.target || e.srcElement;
+    var name = target && target.tagName;
+    if (name && name.match(/input/i)) {
+      return;// ignore input boxes
+    }
     if (e.which === 32) { // spacebar
       changeSteeringMode();
     } else if (e.which === 76) { // l
