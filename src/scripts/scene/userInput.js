@@ -3,6 +3,7 @@
  */
 var FlyControls = require('three.fly');
 var eventify = require('ngraph.events');
+var appEvents = require('../events');
 
 module.exports = createUserInputController;
 
@@ -27,7 +28,7 @@ function createUserInputController(camera, domElement) {
   eventify(controller);
 
   if (window.orientation !== undefined) {
-    var touchControls =  require('three.orientation')(camera);
+    var touchControls = require('three.orientation')(camera);
     controller.update = updateTochToo;
   }
 
@@ -43,20 +44,30 @@ function createUserInputController(camera, domElement) {
   }
 
   function keydown(e) {
-    var target = e.target || e.srcElement;
-    var name = target && target.tagName;
-    if (name && name.match(/input/i)) {
-      return; // ignore input boxes
+    if (e.which === 27) { // ESC
+      appEvents.fire('focusScene');
     }
+
+    if (shouldSkipKeyboardEvent(e)) return;
+
     if (e.which === 32) { // spacebar
       changeSteeringMode();
     } else if (e.which === 76) { // l
       controller.fire('toggleLinks');
     } else if (e.which === 191) { // `/` key
-      controller.fire('focusSearch');
+      // need to do this in next iteration to prevent search field from entering
+      // actual character
+      setTimeout(function() {
+        appEvents.fire('focusSearch');
+      }, 0);
     }
   }
 
+  function shouldSkipKeyboardEvent(e) {
+    var target = e.target || e.srcElement;
+    var name = target && target.tagName;
+    return name && name.match(/input/i); // We should ignore input boxes
+  }
 
   function changeSteeringMode() {
     controls.dragToLook = !controls.dragToLook;
