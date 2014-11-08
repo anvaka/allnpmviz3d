@@ -1,21 +1,23 @@
-<div class="search" ng-controller="searchController">
-  <form class="search-form" role="search" ng-class="{focused: hasFocus}" ng-submit="formSubmitted($event)">
-    <div class="input-group">
-      <input type="text" ng-focus="hasFocus = true" ng-blur="hasFocus = false" ng-model="selectedPackage" ng-change="searchPatternChanged(selectedPackage)" class="form-control no-shadow" placeholder="find packages">
-      <span class="input-group-btn">
+<div class="row">
+  <div class="search col-xs-12 col-sm-6 col-md-4" ng-controller="searchController">
+    <form class="search-form" role="search" ng-class="{focused: hasFocus}" ng-submit="formSubmitted($event)">
+      <div class="input-group">
+        <input type="text" ng-focus="hasFocus = true" ng-blur="hasFocus = false" ng-model="selectedPackage" ng-change="searchPatternChanged(selectedPackage)" class="form-control no-shadow" placeholder="find packages">
+        <span class="input-group-btn">
         <button class="btn" tabindex="-1" type="button"><span class="glyphicon glyphicon-search"></span>
-      </button>
-      </span>
-    </div>
-  </form>
-  <div class="search-results" ng-show="showSearchResults">
-    <h4 dynamic='header'></h4>
-    <div class="scroll-wrapper">
-      <ul when-scrolled="loadMore()">
-        <li ng-repeat="package in matchedPackages">
-          <a href="#" ng-click='showDetails(package)'>{{package}}</a>
-        </li>
-      </ul>
+        </button>
+        </span>
+      </div>
+    </form>
+    <div class="search-results" ng-show="showSearchResults">
+      <h4 dynamic='header'></h4>
+      <div class="scroll-wrapper">
+        <ul when-scrolled="loadMore()">
+          <li ng-repeat="package in matchedPackages">
+            <a href="#" ng-click='showDetails(package)'>{{package}}</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>

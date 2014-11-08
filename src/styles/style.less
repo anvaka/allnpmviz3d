@@ -67,8 +67,6 @@ canvas {
 .search {
   position: absolute;
   top: 12px;
-  left: 12px;
-  width: 350px;
   z-index: 1;
   .search-results {
     padding-top: 12px;
@@ -128,12 +126,14 @@ canvas {
       border-radius: 0;
       border: 0
     }
-    border: 1px solid #808080;
-    &:hover,
-    &.focused {
-      border-color: white;
-      button.btn {
-        background: #66afe9;
+    .input-group {
+      border: 1px solid #808080;
+      &:hover,
+      &.focused {
+        border-color: white;
+        button.btn {
+          background: #66afe9;
+        }
       }
     }
     button.btn {
