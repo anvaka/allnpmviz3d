@@ -9,7 +9,7 @@ module.exports = createUserInputController;
 function createUserInputController(camera, domElement) {
   var clock = new THREE.Clock();
 
-  controls = new FlyControls(camera, domElement);
+  var controls = new FlyControls(camera, domElement);
   domElement.tabIndex = 0;
   domElement.focus();
   controls.movementSpeed = 800;
