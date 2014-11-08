@@ -13,17 +13,17 @@
       <div class='inner'></div>
       <div class="steering-help">Press SPACE to deactivate steering mode</div>
     </div>
-    <div class="package-preview ng-cloak">
-      <div class="row col-md-6">
+    <div class="package-preview ng-cloak container-fluid row">
+      <div class="col-xs-6">
         <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
       </div>
-      <div class="col-md-3">
+      <div class="col-xs-3">
         <div class="row">
           <a href='#' ng-click='showSubgraph(package.name, "dependencies")'><h2>{{package.dependencies | number}}</h2></a>
         </div>
         <div class="row small">Dependencies</div>
       </div>
-      <div class="col-md-3">
+      <div class="col-xs-3">
         <div class="row">
           <a href='#' ng-click='showSubgraph(package.name, "dependents")'><h2>{{package.dependents | number}}</h2></a>
         </div>
