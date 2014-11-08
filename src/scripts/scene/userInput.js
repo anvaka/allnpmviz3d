@@ -26,17 +26,27 @@ function createUserInputController(camera, domElement) {
 
   eventify(controller);
 
+  if (window.orientation !== undefined) {
+    var touchControls =  require('three.orientation')(camera);
+    controller.update = updateTochToo;
+  }
+
   return controller;
 
   function update() {
     controls.update(clock.getDelta());
   }
 
+  function updateTochToo() {
+    controls.update(clock.getDelta());
+    touchControls.update();
+  }
+
   function keydown(e) {
     var target = e.target || e.srcElement;
     var name = target && target.tagName;
     if (name && name.match(/input/i)) {
-      return;// ignore input boxes
+      return; // ignore input boxes
     }
     if (e.which === 32) { // spacebar
       changeSteeringMode();
