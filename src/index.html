@@ -13,7 +13,7 @@
       <div class='inner'></div>
       <div class="steering-help">Press SPACE to deactivate steering mode</div>
     </div>
-    <div class="package-preview ng-cloak container-fluid row">
+    <div class="package-preview ng-cloak container-fluid row" ng-show='showPackagePreview'>
       <div class="col-xs-6">
         <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
       </div>

@@ -72,6 +72,7 @@ function AppController($scope, $http) {
       dependencies: depsInfo.dependencies,
       dependents: depsInfo.dependents
     };
+    $scope.showPackagePreview = true;
 
     if (!$scope.$$phase) $scope.$digest();
   }
