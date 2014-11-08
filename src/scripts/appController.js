@@ -15,10 +15,11 @@ function AppController($scope, $http) {
   scene.on('preview', showPreview);
   scene.on('show-node-tooltip', showNodeTooltip);
 
-  graphModel.on('labelsReady', function() {
-    $scope.allPackagesGraph = graphModel.getGraph();
-  });
+  // when labels are ready search control can start using them:
+  graphModel.on('labelsReady', setGraphOnScope);
 
+  // TODO: these event seem to belong to scene itself:
+  // Someone requested to search a package. Forward it to scene:
   appEvents.on('search', scene.search);
   appEvents.on('focusScene', scene.focus);
   appEvents.on('focusOnPackage', scene.focusOnPackage);
@@ -29,6 +30,10 @@ function AppController($scope, $http) {
   $scope.tooltip = {
     isVisible: false
   };
+
+  function setGraphOnScope() {
+    $scope.allPackagesGraph = graphModel.getGraph();
+  }
 
   function showSubgraph(packageName, type) {
     var filteredGraph = graphModel.filterSubgraph(packageName, type);
