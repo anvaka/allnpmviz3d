@@ -10,6 +10,7 @@ function searchBar() {
   return {
     scope: { allPackagesGraph: '=' },
     restrict: 'E',
+    replace: true,
     template: fs.readFileSync(__dirname + '/searchBar.html', 'utf8'),
     link: function(scope, element) {
       appEvents.on('focusSearch', focusSearch);
