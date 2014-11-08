@@ -8,7 +8,7 @@ module.exports = createHitTest;
 function createHitTest(domElement) {
   var particleSystem;
   var lastIntersected;
-  var postponed = false;
+  var postponed = true;
 
   var projector = new THREE.Projector();
   var raycaster = new THREE.Raycaster();
@@ -72,9 +72,11 @@ function createHitTest(domElement) {
 
   function onMouseUp(e) {
     domMouse.down = false;
+    postponed = true;
   }
 
   function onMouseDown(e) {
+    postponed = false;
     domMouse.down = true;
     domMouse.nodeIndex = lastIntersected;
 
