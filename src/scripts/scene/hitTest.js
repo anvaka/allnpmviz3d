@@ -36,6 +36,8 @@ function createHitTest(domElement) {
   domElement.addEventListener('mousemove', onMouseMove, false);
   domElement.addEventListener('mousedown', onMouseDown, false);
   domElement.addEventListener('mouseup', onMouseUp, false);
+  domElement.addEventListener('touchstart', onTouchStart, false);
+  domElement.addEventListener('touchend', onTouchEnd, false);
 
   var api = {
     /**
@@ -99,15 +101,38 @@ function createHitTest(domElement) {
     }
   }
 
+  function onTouchStart(e) {
+    if (!e.touches && e.touches.length === 1) {
+      postponed = true;
+      return;
+    }
+
+    postponed = false;
+    setMouseCoordinates(e.touches[0]);
+  }
+
+  function onTouchEnd(e) {
+    if (e.touches && e.touches.length === 1) {
+      setMouseCoordinates(e.touches[0]);
+    }
+    setTimeout(function() {
+      postponed = false;
+      api.fire('nodeclick', domMouse);
+    }, 0);
+  }
+
   function onMouseMove(e) {
+    setMouseCoordinates(e);
+    postponed = false; // mouse moved, we are free.
+  }
+
+  function setMouseCoordinates(e) {
     // todo: this should not depend on window
     mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
 
     domMouse.x = e.clientX;
     domMouse.y = e.clientY;
-
-    postponed = false; // mouse moved, we are free.
   }
 
   function update(scene, camera) {
