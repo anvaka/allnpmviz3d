@@ -147,6 +147,7 @@ function init3dView() {
   window.camera = camera;
 
   var renderCallbacks = [];
+  var updateTween = window.performance ? highResTimer : dateTimer;
 
   var renderer = new THREE.WebGLRenderer({
     antialias: false
@@ -184,12 +185,20 @@ function init3dView() {
     for (var i = 0; i < renderCallbacks.length; ++i) {
       renderCallbacks[i](scene, camera);
     }
-    TWEEN.update(time);
+    updateTween(time);
   }
 
   function onWindowResize() {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize(window.innerWidth, window.innerHeight);
+  }
+
+  function highResTimer(time) {
+    TWEEN.update(time);
+  }
+
+  function dateTimer(time) {
+    TWEEN.update(+new Date());
   }
 }
