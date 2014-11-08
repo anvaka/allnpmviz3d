@@ -2,6 +2,7 @@ require('./dynamic');
 
 module.exports = require('an').controller('searchController', searchController);
 
+var screen = require('../scene/screenUtils');
 var appEvents = require('../events');
 var pagify = require('./pagify');
 
@@ -19,6 +20,9 @@ function searchController($scope) {
   // we are not searching anything at the moment, hide search results:
   $scope.showSearchResults = false;
 
+  // on mobile devices we don't want to always show list of packages
+  $scope.showListOfPackages = true;
+
   // let parent scope transfer focus to the scene
   $scope.formSubmitted = function(e) {
     appEvents.fire('focusScene');
@@ -34,6 +38,9 @@ function searchController($scope) {
   $scope.showDetails = function(packageName) {
     appEvents.fire('focusOnPackage', packageName);
     appEvents.fire('focusScene');
+    if (screen.isSmall()) {
+      $scope.showListOfPackages = false;
+    }
   };
 
   appEvents.on('showDependencyGraph', showDependencyGraph);
@@ -100,6 +107,9 @@ function searchController($scope) {
 
   function showDependencyGraph(e) {
     $scope.showSearchResults = true;
+    if (screen.isSmall()) {
+      $scope.showListOfPackages = false;
+    }
     if (e.type === 'dependents') {
       $scope.selectedPackage = ':dependents ' + e.name;
     } else if (e.type === 'dependencies') {
