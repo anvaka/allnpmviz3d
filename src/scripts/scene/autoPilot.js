@@ -37,32 +37,32 @@ function autoPilot(camera) {
       .start();
 
     // Also rotate camera while it flies to an object:
-    var startRotation = new THREE.Euler().copy(camera.rotation);
+    var startRotation = new THREE.Quaternion().copy(camera.quaternion); // new THREE.Euler().copy(camera.rotation);
     camera.lookAt(new THREE.Vector3(to.x, to.y, to.z));
-    var endRotation = new THREE.Euler().copy(camera.rotation);
-    camera.rotation.copy(startRotation); // revert to original rotation
+    var endRotation = new THREE.Quaternion().copy(camera.quaternion);
+    camera.quaternion.copy(startRotation); // revert to original rotation
 
     new TWEEN.Tween({
       x: startRotation.x,
       y: startRotation.y,
-      z: startRotation.z
+      z: startRotation.z,
+      w: startRotation.w
     }).to({
       x: endRotation.x,
       y: endRotation.y,
-      z: endRotation.z
+      z: endRotation.z,
+      w: endRotation.w
     }, 300).onUpdate(rotateCamera).start();
+  }
+
+  function rotateCamera() {
+    camera.quaternion.set(this.x, this.y, this.z, this.w);
   }
 
   function moveCamera(pos) {
     camera.position.x = this.x;
     camera.position.y = this.y;
     camera.position.z = this.z;
-  }
-
-  function rotateCamera() {
-    camera.rotation.x = this.x;
-    camera.rotation.y = this.y;
-    camera.rotation.z = this.z;
   }
 }
 
