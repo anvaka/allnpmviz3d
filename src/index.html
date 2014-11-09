@@ -14,20 +14,32 @@
       <div class="steering-help">Press SPACE to deactivate steering mode</div>
     </div>
     <div class="package-preview ng-cloak container-fluid row" ng-show='showPackagePreview'>
-      <div class="col-xs-6">
-        <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
-      </div>
-      <div class="col-xs-3">
-        <div class="row">
-          <a href='#' ng-click='showSubgraph(package.name, "dependencies")'><h2>{{package.dependencies | number}}</h2></a>
+      <div class='hidden-xs'>
+        <div class="col-xs-6">
+          <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
         </div>
-        <div class="row small">Dependencies</div>
-      </div>
-      <div class="col-xs-3">
-        <div class="row">
-          <a href='#' ng-click='showSubgraph(package.name, "dependents")'><h2>{{package.dependents | number}}</h2></a>
+        <div class="col-xs-3">
+          <div class="row">
+            <a href='#' ng-click='showSubgraph(package.name, "dependencies")'><h2>{{package.dependencies | number}}</h2></a>
+          </div>
+          <div class="row small">Dependencies</div>
         </div>
-        <div class="row small">Dependents</div>
+        <div class="col-xs-3">
+          <div class="row">
+            <a href='#' ng-click='showSubgraph(package.name, "dependents")'><h2>{{package.dependents | number}}</h2></a>
+          </div>
+          <div class="row small">Dependents</div>
+        </div>
+      </div>
+      <div class="visible-xs-block">
+        <div class="col-xs-12 info-block">
+          <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank">{{package.name}}</a>
+          has
+          <a href='#' ng-click='showSubgraph(package.name, "dependencies")'>{{package.dependencies | number}}</a>
+          dependencies, and
+          <a href='#' ng-click='showSubgraph(package.name, "dependents")'>{{package.dependents | number}}</a>
+          dependents
+        </div>
       </div>
     </div>
     <div class="adhoc-tooltip ng-cloak"
