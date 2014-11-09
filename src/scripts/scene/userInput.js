@@ -10,13 +10,13 @@ module.exports = createUserInputController;
 function createUserInputController(camera, domElement) {
   var clock = new THREE.Clock();
 
-  var controls = new FlyControls(camera, domElement);
+  var wasdControls = new FlyControls(camera, domElement);
   domElement.tabIndex = 0;
   domElement.focus();
-  controls.movementSpeed = 800;
-  controls.rollSpeed = 1;
-  controls.autoForward = false;
-  controls.dragToLook = true;
+  wasdControls.movementSpeed = 800;
+  wasdControls.rollSpeed = 1;
+  wasdControls.autoForward = false;
+  wasdControls.dragToLook = true;
 
   // we want to listen on document level, since focus can be anywhere
   window.document.addEventListener('keydown', keydown, false);
@@ -38,11 +38,11 @@ function createUserInputController(camera, domElement) {
   return controller;
 
   function update() {
-    controls.update(clock.getDelta());
+    wasdControls.update(clock.getDelta());
   }
 
   function updateTochToo() {
-    controls.update(clock.getDelta());
+    wasdControls.update(clock.getDelta());
     touchControls.update();
   }
 
@@ -73,12 +73,12 @@ function createUserInputController(camera, domElement) {
   }
 
   function changeSteeringMode() {
-    controls.dragToLook = !controls.dragToLook;
+    wasdControls.dragToLook = !wasdControls.dragToLook;
 
-    controls.moveState.yawLeft = 0;
-    controls.moveState.pitchDown = 0;
-    controls.updateRotationVector();
-    controller.fire('steeringModeChanged', controls.dragToLook);
+    wasdControls.moveState.yawLeft = 0;
+    wasdControls.moveState.pitchDown = 0;
+    wasdControls.updateRotationVector();
+    controller.fire('steeringModeChanged', wasdControls.dragToLook);
   }
 
   function pause() {
