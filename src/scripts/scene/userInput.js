@@ -21,14 +21,17 @@ function createUserInputController(camera, domElement) {
   // we want to listen on document level, since focus can be anywhere
   window.document.addEventListener('keydown', keydown, false);
 
+  var touchControls;
   var controller = {
-    update: update
+    update: update,
+    pause: pause,
+    resume: resume
   };
 
   eventify(controller);
 
   if (window.orientation !== undefined) {
-    var touchControls = require('three.orientation')(camera);
+    touchControls = require('three.orientation')(camera);
     controller.update = updateTochToo;
   }
 
@@ -76,5 +79,13 @@ function createUserInputController(camera, domElement) {
     controls.moveState.pitchDown = 0;
     controls.updateRotationVector();
     controller.fire('steeringModeChanged', controls.dragToLook);
+  }
+
+  function pause() {
+    if (touchControls) touchControls.disconnect();
+  }
+
+  function resume () {
+    if (touchControls) touchControls.connect();
   }
 }

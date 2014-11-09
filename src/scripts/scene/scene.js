@@ -27,14 +27,14 @@ function sceneView(graphModel) {
   hitTest.on('nodeclick', handleNodeClick);
   hitTest.on('nodedblclick', handleNodeDblClick);
 
-  var userInputController = createUserInputController(view.getCamera(), view.domElement);
-  userInputController.on('steeringModeChanged', toggleSteeringIndicator);
-  userInputController.on('toggleLinks', function() {
+  var userInput = createUserInputController(view.getCamera(), view.domElement);
+  userInput.on('steeringModeChanged', toggleSteeringIndicator);
+  userInput.on('toggleLinks', function() {
     shouldShowLinks = linkView.toggleLinks();
   });
 
   view.onrender(hitTest.update);
-  view.onrender(userInputController.update);
+  view.onrender(userInput.update);
 
   graphModel.on('nodesReady', nodeView.render);
   graphModel.on('linksReady', function(graphModel) {
@@ -48,8 +48,10 @@ function sceneView(graphModel) {
     var pos = graphModel.getPackagePosition(packageName);
     if (!pos) return; // we are missing data
     hitTest.postpone();
+    userInput.pause();
     autoPilot.flyTo(pos, function done() {
       showPreview(packageName);
+      userInput.resume();
     });
   }
 
@@ -89,7 +91,12 @@ function sceneView(graphModel) {
     var camera = view.getCamera();
 
     var offset = Math.max(sphere.radius, 100) / Math.tan(Math.PI / 180.0 * camera.fov * 0.5);
-    autoPilot.flyTo(sphere.center, offset);
+
+    userInput.pause();
+    autoPilot.flyTo(sphere.center, function () {
+      userInput.resume();
+    }, offset);
+
     hitTest.reset();
   }
 
