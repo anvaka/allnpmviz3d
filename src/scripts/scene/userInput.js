@@ -11,6 +11,8 @@ function createUserInputController(camera, domElement) {
   var clock = new THREE.Clock();
 
   var wasdControls = new FlyControls(camera, domElement);
+  var paused = false;
+
   domElement.tabIndex = 0;
   domElement.focus();
   wasdControls.movementSpeed = 800;
@@ -21,21 +23,25 @@ function createUserInputController(camera, domElement) {
   // we want to listen on document level, since focus can be anywhere
   window.document.addEventListener('keydown', keydown, false);
 
+  // TODO: IE?
+  domElement.addEventListener('touchstart', onTouchStart, false);
+  domElement.addEventListener('touchend', onTouchEnd, false);
+
   var touchControls;
-  var controller = {
+  var api = {
     update: update,
     pause: pause,
     resume: resume
   };
 
-  eventify(controller);
+  eventify(api);
 
   if (window.orientation !== undefined) {
     touchControls = require('three.orientation')(camera);
-    controller.update = updateTochToo;
+    api.update = updateTochToo;
   }
 
-  return controller;
+  return api;
 
   function update() {
     wasdControls.update(clock.getDelta());
@@ -56,7 +62,7 @@ function createUserInputController(camera, domElement) {
     if (e.which === 32) { // spacebar
       changeSteeringMode();
     } else if (e.which === 76) { // l
-      controller.fire('toggleLinks');
+      api.fire('toggleLinks');
     } else if (e.which === 191) { // `/` key
       // need to do this in next iteration to prevent search field from entering
       // actual character
@@ -64,6 +70,26 @@ function createUserInputController(camera, domElement) {
         appEvents.fire('focusSearch');
       }, 0);
     }
+  }
+
+  function onTouchStart(e) {
+    if (paused) return;
+    if (!e.touches) return;
+
+    if (e.touches.length > 0) {
+      wasdControls.moveState.forward = (e.touches.length === 1);
+      wasdControls.moveState.back = (e.touches.length === 2);
+      wasdControls.updateMovementVector();
+    }
+  }
+
+  function onTouchEnd(e) {
+    if (paused) return;
+
+    if (!e.touches) return;
+    wasdControls.moveState.forward = (e.touches.length === 1);
+    wasdControls.moveState.back = (e.touches.length === 2);
+    wasdControls.updateMovementVector();
   }
 
   function shouldSkipKeyboardEvent(e) {
@@ -78,14 +104,28 @@ function createUserInputController(camera, domElement) {
     wasdControls.moveState.yawLeft = 0;
     wasdControls.moveState.pitchDown = 0;
     wasdControls.updateRotationVector();
-    controller.fire('steeringModeChanged', wasdControls.dragToLook);
+    api.fire('steeringModeChanged', wasdControls.dragToLook);
   }
 
   function pause() {
-    if (touchControls) touchControls.disconnect();
+    paused = true;
+    disconnectTouch();
   }
 
-  function resume () {
-    if (touchControls) touchControls.connect();
+  function resume() {
+    paused = false;
+    connectTouch();
+  }
+
+  function disconnectTouch() {
+    if (touchControls) {
+      touchControls.disconnect();
+    }
+  }
+
+  function connectTouch() {
+    if (touchControls) {
+      touchControls.connect();
+    }
   }
 }
