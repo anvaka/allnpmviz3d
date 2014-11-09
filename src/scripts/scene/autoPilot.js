@@ -37,7 +37,7 @@ function autoPilot(camera) {
       .start();
 
     // Also rotate camera while it flies to an object:
-    var startRotation = new THREE.Quaternion().copy(camera.quaternion); // new THREE.Euler().copy(camera.rotation);
+    var startRotation = new THREE.Quaternion().copy(camera.quaternion);
     camera.lookAt(new THREE.Vector3(to.x, to.y, to.z));
     var endRotation = new THREE.Quaternion().copy(camera.quaternion);
     camera.quaternion.copy(startRotation); // revert to original rotation
