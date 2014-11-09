@@ -102,7 +102,7 @@ function createHitTest(domElement) {
   }
 
   function onTouchStart(e) {
-    if (!e.touches && e.touches.length === 1) {
+    if (!e.touches || e.touches.length !== 1) {
       postponed = true;
       return;
     }
