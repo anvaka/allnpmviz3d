@@ -1,4 +1,4 @@
-@import "../../node_modules/twitter-bootstrap-3.0.0/less/bootstrap.less";
+@import "../../node_modules/bootstrap/less/bootstrap.less";
 
 html {
   -webkit-font-smoothing: antialiased;
@@ -175,6 +175,14 @@ canvas {
   .small {
     text-align: center;
     color: #999;
+  }
+  @media (max-width: @screen-sm-min) {
+    width: 100%;
+  }
+  .info-block {
+    a {
+      font-size: 18px;
+    }
   }
 }
 
