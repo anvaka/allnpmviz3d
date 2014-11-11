@@ -7,9 +7,9 @@ var gulp = require('gulp'),
        .argv;
 
 var devServer = {
-  port: argv.port || Math.round(31337 + Math.random() * 1000),
+  port: argv.port || getRandomPortBasedOnPath(31337),
   server: argv.server || '0.0.0.0',
-  livereload: 35000 + Math.round((Math.random() * 1000)),
+  livereload: getRandomPortBasedOnPath(35000),
   root: './dist'
 };
 
@@ -104,4 +104,18 @@ function notifyLivereload(event) {
   var fileName = require('path').relative(devServer.root, event.path);
   lr.changed({ body: { files: [fileName] } });
   gutil.log("Notified live reload for http://" + devServer.server + ":" + devServer.port);
+}
+
+function getRandomPortBasedOnPath(seed) {
+  var sillyHash = getHash(__dirname);
+  return Math.round(seed + sillyHash);
+}
+
+function getHash(str) {
+  var result = 0;
+  for (var i = 0; i < str.length; ++i) {
+    result += str.charCodeAt(i);
+  }
+
+  return result;
 }
