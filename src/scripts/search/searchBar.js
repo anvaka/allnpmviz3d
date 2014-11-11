@@ -1,5 +1,5 @@
+require('whenscrolled');
 require('./searchController');
-require('./whenScrolled');
 
 module.exports = require('an').directive('searchBar', searchBar);
 
