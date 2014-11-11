@@ -1,5 +1,5 @@
 /**
- * Simple directive which allows to execute callbacke when
+ * Simple directive which allows to execute callback when
  * user scrolls over element
  */
 module.exports = require('an').directive(whenScrolled);
