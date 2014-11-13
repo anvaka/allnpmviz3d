@@ -14,12 +14,14 @@ function sceneView(graphModel) {
   var linkView = createLinkView(view.getScene());
   var shouldShowLinks = linkView.linksVisible();
   var autoPilot = createAutoPilot(view.getCamera());
+  var jiggler;
 
   var api = eventify({
     search: search,
     subgraph: subgraph,
     focus: focus,
-    focusOnPackage: focusOnPackage
+    focusOnPackage: focusOnPackage,
+    jiggle: jiggle
   });
 
   var hitTest = createHitTest(view.domElement);
@@ -33,8 +35,7 @@ function sceneView(graphModel) {
     shouldShowLinks = linkView.toggleLinks();
   });
 
-  view.onrender(hitTest.update);
-  view.onrender(userInput.update);
+  view.onrender(render);
 
   graphModel.on('nodesReady', nodeView.render);
   graphModel.on('linksReady', function(graphModel) {
@@ -43,6 +44,38 @@ function sceneView(graphModel) {
   });
 
   return api;
+
+  function render(scene, camera) {
+    hitTest.update(scene, camera);
+    userInput.update(scene, camera);
+    // todo: this is ugly and should not belong here
+    if (jiggler) {
+      var vx = 4, vy = 4, vz = 4;
+      var points = jiggler.points;
+      var destinations = jiggler.destinations;
+      for (var i = 0; i < destinations.length; ++i) {
+        var idx = i * 3;
+        var d = destinations[i];
+        if (points[idx] + vx < d.x) { points[idx] += vx; }
+        if (points[idx] + vx > d.x) { points[idx] -= vx; }
+
+        if (points[idx + 1] + vy < d.y) { points[idx + 1] += vy; }
+        if (points[idx + 1] + vy > d.y) { points[idx + 1] -= vy; }
+
+        if (points[idx + 2] + vz < d.z) { points[idx + 2] += vz; }
+        if (points[idx + 2] + vz > d.z) { points[idx + 2] -= vz; }
+      }
+
+      jiggler.position.needsUpdate = true;
+    }
+  }
+  function jiggle() {
+    if (linkView.linksVisible()) {
+      linkView.linksVisible(false);
+    }
+    jiggler = nodeView.jiggle();
+    focusOnSphere(jiggler.sphere);
+  }
 
   function focusOnPackage(packageName) {
     var pos = graphModel.getPackagePosition(packageName);
@@ -88,6 +121,12 @@ function sceneView(graphModel) {
 
     linkView.render(graphModel);
     var sphere = nodeView.getBoundingSphere();
+    focusOnSphere(sphere);
+
+    hitTest.reset();
+  }
+
+  function focusOnSphere(sphere) {
     var camera = view.getCamera();
 
     var offset = Math.max(sphere.radius, 100) / Math.tan(Math.PI / 180.0 * camera.fov * 0.5);
@@ -96,8 +135,6 @@ function sceneView(graphModel) {
     autoPilot.flyTo(sphere.center, function () {
       userInput.resume();
     }, offset);
-
-    hitTest.reset();
   }
 
   function focus() {

@@ -16,8 +16,37 @@ function nodeView(scene) {
     render: render,
     setNodeUI: setNodeUI,
     getBoundingSphere: getBoundingSphere,
-    refresh: refresh
+    refresh: refresh,
+    jiggle: jiggle
   };
+
+  function jiggle() {
+    var randPoints = require('three.randompoints');
+    var textGeo = new THREE.TextGeometry('npm loves you', {
+      height: 100,
+      size: 700
+    });
+
+    textGeo.computeBoundingSphere();
+    textGeo.computeVertexNormals();
+    var destinations = randPoints.inGeometry(textGeo, points.length/3);
+
+    for (var i = 0; i < destinations.length; ++i) {
+      if (destinations[i].x  > 2000 && destinations[i].x < 4500) {
+        colors[i * 3] = 1;
+        colors[i * 3 + 1] = 0.5;
+        colors[i * 3 + 2] = 0.9;
+      }
+    }
+    geometry.getAttribute('customColor').needsUpdate = true;
+    return {
+      destinations: destinations,
+      sphere: textGeo.boundingSphere,
+      position: geometry.getAttribute('position'),
+      points: points
+    };
+  }
+
 
   function refresh() {
     geometry.getAttribute('customColor').needsUpdate = true;

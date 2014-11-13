@@ -31,7 +31,7 @@ function searchController($scope) {
       // <command> <value>
       var commandInput = $scope.selectedPackage;
       var commandMatch = commandInput.match(/^:([^\s]+)(.+)?$/);
-      if (commandMatch) handleCommand(commandMatch[1], commandMatch[2]);
+      if (commandMatch) handleCommand(commandMatch[1], commandMatch[2], commandInput);
     }
   };
 
@@ -59,7 +59,7 @@ function searchController($scope) {
   // tell parents that search pattern is changed, update search results
   $scope.searchPatternChanged = searchPatternChanged;
 
-  function handleCommand(command, args) {
+  function handleCommand(command, args, commandInput) {
     // todo: simplify this
     if (command.match(/^d.*ts$/i) && args) { // Assume 'dependents'
       appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'dependents');
@@ -69,6 +69,9 @@ function searchController($scope) {
       appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'alldependents');
     } else if (command.match(/^a(ll)?d.*es$/i) && args) { // assume 'alldependencies'
       appEvents.fire('subgraphRequested', args.replace(/^\s+|\s+$/g, ''), 'alldependencies');
+    } else if (commandInput.match(/i love npm/i)) {
+      // todo: this should be based on some sort of plugins
+      appEvents.fire('jiggle');
     } else {
       // TODO: Implement more commands. This is supposed to be command mode, where users
       // can enter complex filters.

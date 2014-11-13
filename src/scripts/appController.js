@@ -2,6 +2,7 @@ require('./search/searchBar');
 
 // dirty hack to get THREE.js into global namespace
 var THREE = window.THREE = require('three').THREE;
+window._typeface_js = { faces: THREE.FontUtils.faces, loadFace: THREE.FontUtils.loadFace };
 
 var appEvents = require('./events');
 var getDependenciesInfo = require('./model/getDepsInfo');
@@ -23,6 +24,7 @@ function AppController($scope, $http) {
   appEvents.on('search', scene.search);
   appEvents.on('focusScene', scene.focus);
   appEvents.on('focusOnPackage', scene.focusOnPackage);
+  appEvents.on('jiggle', scene.jiggle);
   appEvents.on('subgraphRequested', showSubgraph);
 
   $scope.showSubgraph = showSubgraph;
