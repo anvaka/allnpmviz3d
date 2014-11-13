@@ -69,6 +69,8 @@ function createUserInputController(camera, domElement) {
       setTimeout(function() {
         appEvents.fire('focusSearch');
       }, 0);
+    } else if (e.which === 186) { // colon
+        appEvents.fire('focusSearch');
     }
   }
 
