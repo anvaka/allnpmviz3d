@@ -1,3 +1,6 @@
+/**
+ * This is a core piece of our application. It fetches and provides graph data.
+ */
 var eventify = require('ngraph.events');
 var createGraph = require('ngraph.graph');
 var subgraph = require('./model/subgraph');
@@ -7,13 +10,13 @@ module.exports = function($http, $q) {
   var filteredGraph = graph;
   var labels;
 
-
   $http.get('data/positions.bin', {
     responseType: "arraybuffer"
   })
     .then(convertToPositions)
     .then(addNodesToGraph)
-    .then(downloadLinks);
+    .then(downloadLinks)
+    .catch (reportError);
 
   $http.get('data/labels.json')
     .then(addLabelsToGraph);
@@ -52,9 +55,19 @@ module.exports = function($http, $q) {
   };
 
   eventify(model);
-  model.fire('loadingNodes');
+
+  // we want to notify on next event cycle, that nodes are being loaded
+  // Since this class is on the core ones, it needs to let other code to be
+  // bootstrapped, before it can fire events.
+  setTimeout(function() {
+    model.fire('loadingNodes');
+  }, 0);
 
   return model;
+
+  function reportError(err) {
+    model.fire('downloadFailed', err);
+  }
 
   function filterSubgraph(packageName, type) {
     var id = packageNameToId(packageName);

@@ -6,9 +6,12 @@ var createNodeView = require('./nodeView');
 var createLinkView = require('./linkView');
 var init3dView = require('./initThree');
 
+var webglEnabled = require('webgl-enabled')();
 module.exports = sceneView;
 
 function sceneView(graphModel) {
+  if (!webglEnabled) return;
+
   var view = init3dView();
   var nodeView = createNodeView(view.getScene());
   var linkView = createLinkView(view.getScene());

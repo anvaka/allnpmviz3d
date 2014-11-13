@@ -46,8 +46,7 @@
          ng-show="tooltip.isVisible"
          ng-style="{left:tooltip.x, top:tooltip.y}">{{tooltip.name}}</div>
 
-    <h2 class="loading-log ng-cloak" dynamic='loading.message'
-        ng-show='loading.isVisible'></h2>
+    <help-message class='loading-log' graph-model='graphModel'></help-message>
     <script src='bundle.js' type="text/javascript" charset="utf-8">
     </script>
 

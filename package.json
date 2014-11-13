@@ -37,6 +37,7 @@
     "three.fly": "0.0.0",
     "three.orientation": "^1.1.0",
     "tween.js": "^0.14.0",
+    "webgl-enabled": "^1.0.0",
     "whenscrolled": "0.0.1"
   }
 }

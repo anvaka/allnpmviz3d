@@ -7,6 +7,7 @@ html {
 body,
 html,
 canvas {
+  background: black;
   position: absolute;
   width: 100%;
   height: 100%;
@@ -30,10 +31,28 @@ canvas {
 .loading-log {
   z-index: 1;
   position: absolute;
+  background: black;
   top: 60px;
-  left: 16px;
+  padding: 10px;
   color: white;
+  strong {
+    color: deeppink;
+  }
+  h2 {
+    margin-left: 7px;
+  }
+  .close {
+    opacity: 0.5;
+    color: white;
+    position: absolute;
+    top: 0;
+    right: 16px;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
+
 @crosshair-r: 100px;
 
 .steering {

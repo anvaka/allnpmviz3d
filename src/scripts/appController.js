@@ -1,4 +1,5 @@
 require('./search/searchBar');
+require('./help/message');
 
 // dirty hack to get THREE.js into global namespace
 var THREE = window.THREE = require('three').THREE;
@@ -15,23 +16,25 @@ require('an').controller(AppController);
 
 function AppController($scope, $http) {
   var graphModel = require('./graphModel')($http);
-  var scene = require('./scene/scene')(graphModel);
+  $scope.graphModel = graphModel;
 
-  scene.on('preview', showPreview);
-  scene.on('show-node-tooltip', showNodeTooltip);
+  var scene = require('./scene/scene')(graphModel);
+  if (scene) {
+    // scene may be null, if webgl is not supported. This is very bad,
+    // most of the site will not function properly.
+    scene.on('preview', showPreview);
+    scene.on('show-node-tooltip', showNodeTooltip);
+    // TODO: these event seem to belong to scene itself:
+    // Someone requested to search a package. Forward it to scene:
+    appEvents.on('search', scene.search);
+    appEvents.on('focusScene', scene.focus);
+    appEvents.on('focusOnPackage', scene.focusOnPackage);
+    appEvents.on('jiggle', scene.jiggle);
+  }
+
 
   // when labels are ready search control can start using them:
   graphModel.on('labelsReady', setGraphOnScope);
-  graphModel.on('loadingConnections', setStatus('Loading connections...'));
-  graphModel.on('loadingNodes', setStatus('Loading packages...'));
-  graphModel.on('coreReady', showHint);
-
-  // TODO: these event seem to belong to scene itself:
-  // Someone requested to search a package. Forward it to scene:
-  appEvents.on('search', scene.search);
-  appEvents.on('focusScene', scene.focus);
-  appEvents.on('focusOnPackage', scene.focusOnPackage);
-  appEvents.on('jiggle', scene.jiggle);
   appEvents.on('subgraphRequested', showSubgraph);
 
   $scope.showSubgraph = showSubgraph;
@@ -40,38 +43,13 @@ function AppController($scope, $http) {
     isVisible: false
   };
 
-  $scope.loading = {
-    message: ''
-  };
-
-  function setStatus(message) {
-    return function() {
-      $scope.loading.isVisible = true;
-      $scope.loading.message = message;
-      digest();
-    };
-  }
-
-  function showHint() {
-    // todo: this should be in a separate nice directive
-    var showMobileHelp = window.orientation;
-    var helpMessage = showMobileHelp ? 'One finger touch: move forward <br/> Two fingers touch: move backward' :
-      'Use WASD to move<br /> Spacebar to toggle steering';
-    setStatus(helpMessage)();
-
-    setTimeout(function () {
-      $scope.loading.isVisible = false;
-      digest();
-    }, 5000);
-  }
-
   function setGraphOnScope() {
     $scope.allPackagesGraph = graphModel.getGraph();
   }
 
   function showSubgraph(packageName, type) {
     var filteredGraph = graphModel.filterSubgraph(packageName, type);
-    scene.subgraph(packageName); // todo: rename this to something else.
+    if (scene) scene.subgraph(packageName); // todo: rename this to something else.
 
     appEvents.fire('showDependencyGraph', {
       name: packageName,
