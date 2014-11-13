@@ -7,6 +7,7 @@ module.exports = function($http, $q) {
   var filteredGraph = graph;
   var labels;
 
+
   $http.get('data/positions.bin', {
     responseType: "arraybuffer"
   })
@@ -51,6 +52,7 @@ module.exports = function($http, $q) {
   };
 
   eventify(model);
+  model.fire('loadingNodes');
 
   return model;
 
@@ -75,10 +77,12 @@ module.exports = function($http, $q) {
   }
 
   function downloadLinks() {
+    model.fire('loadingConnections');
     $http.get('data/links.bin', {
       responseType: "arraybuffer"
     })
-      .then(addLinksToGraph);
+      .then(addLinksToGraph)
+      .then(notifyCoreReady);
   }
 
   function addLabelsToGraph(response) {
@@ -112,6 +116,10 @@ module.exports = function($http, $q) {
 
     model.fire('linksReady', model);
     return graph;
+  }
+
+  function notifyCoreReady() {
+    model.fire('coreReady');
   }
 
   function convertToPositions(response) {
