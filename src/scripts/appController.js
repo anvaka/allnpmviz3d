@@ -1,13 +1,7 @@
 require('./search/searchBar');
 require('./help/message');
 
-// dirty hack to get THREE.js into global namespace
-var THREE = window.THREE = require('three').THREE;
-// todo: Remove this
-window._typeface_js = {
-  faces: THREE.FontUtils.faces,
-  loadFace: THREE.FontUtils.loadFace
-};
+require('./scene/patchThree');
 
 var appEvents = require('./events');
 var getDependenciesInfo = require('./model/getDepsInfo');
