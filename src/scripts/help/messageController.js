@@ -42,7 +42,7 @@ function messageController($scope) {
 
   function showHint() {
     $scope.isVisible = true;
-    $scope.messageType = window.orientation ? 'touchHelp' : 'keyboardHelp';
+    $scope.messageType = (window.orientation !== undefined) ? 'touchHelp' : 'keyboardHelp';
     scheduleCloseHintTimeout();
   }
 
