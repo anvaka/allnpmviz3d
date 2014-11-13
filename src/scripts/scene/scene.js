@@ -78,10 +78,23 @@ function sceneView(graphModel) {
   }
 
   function focusOnPackage(packageName) {
-    var pos = graphModel.getPackagePosition(packageName);
+    var pos;
+    if (jiggler) {
+      var node = graphModel.getNodeByName(packageName);
+      if (node) {
+        pos = {
+          x: jiggler.points[node.id * 3],
+          y: jiggler.points[node.id * 3 + 1],
+          z: jiggler.points[node.id * 3 + 2]
+        };
+      }
+    } else {
+      pos = graphModel.getPackagePosition(packageName);
+    }
     if (!pos) return; // we are missing data
     hitTest.postpone();
     userInput.pause();
+
     autoPilot.flyTo(pos, function done() {
       showPreview(packageName);
       userInput.resume();
@@ -113,6 +126,7 @@ function sceneView(graphModel) {
     }
     adjustNodeSize(graphModel);
     hitTest.reset();
+    jiggler = null;
   }
 
   function subgraph(name) {
