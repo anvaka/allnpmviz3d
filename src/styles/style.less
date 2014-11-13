@@ -228,3 +228,40 @@ h4 {
   pointer-events:none;
   padding: 4px 10px;
 }
+
+.share {
+  position: absolute;
+  right: 12px;
+  font-size: 12px;
+  top: 12px;
+  z-index: 1;
+
+  p {
+    margin-bottom: 2px;
+    text-align: right;
+    a {
+      color: #808080;
+    }
+    a:hover, a:focus {
+      color: #66AFE9;
+      text-decoration: none;
+    }
+  }
+}
+@media only screen and (max-width : 775px) {
+  .share {
+    bottom: 0;
+    right: 0;
+    font-size: 12px;
+    width: 100%;
+    text-align: right;
+    top: inherit;
+    padding-left: 19px;
+    background-color: black;
+
+    p {
+      display: inline-block;
+      padding-right: 7px;
+    }
+  }
+}

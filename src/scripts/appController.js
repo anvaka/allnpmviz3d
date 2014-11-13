@@ -1,5 +1,6 @@
 require('./search/searchBar');
 require('./help/message');
+require('./shareController');
 
 require('./scene/patchThree');
 
