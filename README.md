@@ -3,6 +3,11 @@ allnpmviz3d
 
 Npm universe in 3d. `106,317` packages, `235,887` connections, single graph.
 
+Video
+=====
+
+[![youtube](http://i.imgur.com/FO1GFHh.png)](https://www.youtube.com/watch?v=ECDjf_Gc1as)
+
 Screenshots
 ===========
 
