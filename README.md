@@ -20,3 +20,7 @@ Immediate dependents of [lodash](https://www.npmjs.org/package/lodash)
 
 Direct and indirect dependents of lodash
 ![lodash all dependents](https://raw.githubusercontent.com/anvaka/allnpmviz3d/master/images/lodash-indirect-dependents.png)
+
+Responsive design:
+![npm mobile](https://raw.githubusercontent.com/anvaka/allnpmviz3d/master/images/npm-mobile.png)
+
