@@ -1,7 +1,9 @@
-allnpmviz3d
-===========
+Big bang of npm
+================
 
-Npm universe in 3d. `106,317` packages, `235,887` connections, single graph.
+npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/) gives you a small spaceship to explore the universe from inside. `106,317` stars (packages), `235,887` connections (dependencies).
+
+Use `WASD` keys to move around. If you are browsing this with a modern smartphone - rotate your device around to control the camera (WebGL is required).
 
 Video
 =====
