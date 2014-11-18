@@ -1,3 +1,8 @@
+/**
+ * This is higher level abstraction on top of THREE.js scene
+ * which commands how to render nodes, links, performs autopiloting
+ * and handles ray tracing for user input
+ */
 var eventify = require('ngraph.events');
 var createAutoPilot = require('./autoPilot');
 var createHitTest = require('./hitTest');

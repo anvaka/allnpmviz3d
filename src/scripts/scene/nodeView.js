@@ -1,3 +1,6 @@
+/**
+ * Responsible for rendering nodes on three.js scene
+ */
 module.exports = nodeView;
 
 var particleMaterial = createParticleMaterial();
