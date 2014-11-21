@@ -8,7 +8,7 @@
  * application parts.
  */
  
-// These requires are used to get angular controllers/directices into
+// These requires are used to get angular controllers/directives into
 // final bundle.
 require('./search/searchBar');
 require('./help/message');
@@ -22,7 +22,7 @@ require('./scene/patchThree');
 // Reduces coupling betweeng components.
 var appEvents = require('./events');
 
-// simple statistics about node: how many dependents/dependencies?
+// simple statistics about packages: how many dependents/dependencies?
 var getDependenciesInfo = require('./model/getDepsInfo');
 
 // register AppController as a controller within angular
