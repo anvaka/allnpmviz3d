@@ -11,12 +11,13 @@ module.exports = function($http, $q) {
   var labels;
 
   $http.get('data/positions.bin', {
-    responseType: "arraybuffer"
+    responseType: 'arraybuffer'
   })
     .then(convertToPositions)
     .then(addNodesToGraph)
     .then(downloadLinks)
-    .catch (reportError);
+    .
+  catch (reportError);
 
   $http.get('data/labels.json')
     .then(addLabelsToGraph);
@@ -72,7 +73,18 @@ module.exports = function($http, $q) {
   function filterSubgraph(packageName, type) {
     var id = packageNameToId(packageName);
     if (id < 0) return;
-    filteredGraph = subgraph(graph, id, type);
+
+    var needAll = type && (type[0] === 'a') && (type[1] === 'l') && (type[2] === 'l');
+    if (needAll) {
+      type = type.substr(3); // remove `all` prefix
+    }
+
+    if (type === 'dependents') {
+      filteredGraph = needAll ? subgraph.inAll(graph, id) : subgraph.in(graph, id);
+    } else {
+      filteredGraph = needAll ? subgraph.outAll(graph, id) : subgraph.out(graph, id);
+    }
+
     return filteredGraph;
   }
 

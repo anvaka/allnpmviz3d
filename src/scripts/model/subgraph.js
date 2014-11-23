@@ -9,16 +9,27 @@
  */
 var createGraph = require('ngraph.graph');
 
-module.exports = function subgraph(sourceGraph, startNodeId, type) {
+module.exports.in = function incoming(graph, id) {
+  return subgraph(graph, id, 'in');
+};
+
+module.exports.inAll = function inAll(graph, id) {
+  return subgraph(graph, id, 'in', true);
+};
+
+module.exports.out = function out(graph, id) {
+  return subgraph(graph, id, 'out');
+};
+module.exports.outAll = function outAll(graph, id) {
+  return subgraph(graph, id, 'out', true);
+};
+
+function subgraph(sourceGraph, startNodeId, type, needAll) {
   var graph = createGraph();
   var id = 0;
   var startNode = sourceGraph.getNode(startNodeId);
   var nodesToProcess = [];
   var addedNodes = [];
-  var needAll = type && (type[0] === 'a') && (type[1] === 'l') && (type[2] === 'l');
-  if (needAll) {
-    type = type.substr(3); // remove `all` prefix
-  }
 
   // root node should always be added:
   addedNodes[startNodeId] = id;
@@ -39,7 +50,7 @@ module.exports = function subgraph(sourceGraph, startNodeId, type) {
     sourceGraph.forEachLinkedNode(originalNodeId, function(node, link) {
       var nodeId;
       var otherNodeId;
-      if (link.toId === originalNodeId && type === 'dependents') {
+      if (link.toId === originalNodeId && type === 'in') {
         otherNodeId = addedNodes[node.id];
         if (otherNodeId === undefined) {
           // we haven't seen this node before.
@@ -55,7 +66,7 @@ module.exports = function subgraph(sourceGraph, startNodeId, type) {
           // we've already added this node to subgraph. Add link only
           graph.addLink(otherNodeId, newNodeId);
         }
-      } else if (link.fromId === originalNodeId && type === 'dependencies') {
+      } else if (link.fromId === originalNodeId && type === 'out') {
 
         otherNodeId = addedNodes[node.id];
         if (otherNodeId === undefined) {
@@ -73,4 +84,4 @@ module.exports = function subgraph(sourceGraph, startNodeId, type) {
       }
     });
   }
-};
+}
