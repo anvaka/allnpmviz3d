@@ -1,5 +1,5 @@
 /**
- * Responsible for low level THREE.js scene setup. We also have highler level API
+ * Responsible for low level THREE.js scene setup. We also have higher level API
  * to work with graph: `scene.js`
  */
 module.exports = init3dView;

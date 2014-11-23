@@ -1,4 +1,4 @@
-// todo: this needs to be a separate npm package
+// TODO: this needs to be a separate npm package
 module.exports = require('an').controller('ShareController', ShareController);
 
 function ShareController($scope) {

@@ -35,7 +35,7 @@ You can fly using device orientation API - just turn your phone around.
 How is this done?
 =================
 
-With love of npm everything is possible. This project is built entirey on npm packages.
+With love of npm everything is possible. This project is built entirely on npm packages.
 
 I'm using [ngraph](https://github.com/anvaka/ngraph) modules to precomupte 3D graph
 layout offline. [angular](https://www.npmjs.org/package/angular) + [an](https://github.com/anvaka/an)
@@ -46,7 +46,7 @@ Finally, [gulp uses browserify](https://github.com/anvaka/allnpmviz3d/blob/maste
 browser friendly bundle.
 
 The entry point to an app is [appController](https://github.com/anvaka/allnpmviz3d/blob/master/src/scripts/appController.js)
-You can start your exploration there. It bootsraps all key components and provides
+You can start your exploration there. It bootstraps all key components and provides
 messaging between them.
 
 

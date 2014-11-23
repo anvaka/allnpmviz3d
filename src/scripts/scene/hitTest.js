@@ -136,7 +136,7 @@ function createHitTest(domElement) {
   }
 
   function update(scene, camera) {
-    // We need to stop processin any events until user moves mouse.
+    // We need to stop processing any events until user moves mouse.
     // this is to avoid race conditions between search field and scene
     if (postponed) return;
 

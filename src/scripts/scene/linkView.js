@@ -18,7 +18,7 @@ function renderLinks(scene) {
     toggleLinks: toggleLinks,
     /**
      * Gets or sets links visibility. If you pass truthy argument
-     * sets visibility to that value. Othweris returns current visibility
+     * sets visibility to that value. Otherwise returns current visibility
      */
     linksVisible: setOrGetLinksVisible
   };

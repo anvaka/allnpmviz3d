@@ -1,3 +1,6 @@
+/**
+ * Naive way to escape HTML tags
+ */
 module.exports = escapeHtml;
 
 var entityMap = {

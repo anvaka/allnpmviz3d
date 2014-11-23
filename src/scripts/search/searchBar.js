@@ -1,6 +1,10 @@
 require('whenscrolled');
 require('./searchController');
 
+/**
+ * A directive to render search bar. We only handle `focusSearch` event
+ * here. Remaining logic resides in the searchController.js
+ */
 module.exports = require('an').directive('searchBar', searchBar);
 
 var fs = require('fs');

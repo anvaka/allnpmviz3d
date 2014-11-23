@@ -44,7 +44,7 @@ function AppController($scope, $http) {
 
   function showSubgraph(packageName, type) {
     var filteredGraph = graphModel.filterSubgraph(packageName, type);
-    if (scene) scene.subgraph(packageName); // todo: rename this to something else.
+    if (scene) scene.subgraph(packageName); // TODO: rename this to something else.
 
     appEvents.fire('showDependencyGraph', {
       name: packageName,

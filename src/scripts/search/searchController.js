@@ -1,3 +1,6 @@
+/**
+ * Search bar controller. Handles user input and fires search commands
+ */
 require('./dynamic');
 
 module.exports = require('an').controller('searchController', searchController);
@@ -167,7 +170,7 @@ function searchController($scope) {
   }
 }
 
-// todo: maybe this should be a separate module? it could be used by graphModel
+// TODO: maybe this should be a separate module? It could be used by graphModel
 // too to filter the graph...
 function getAllMatches(graph, pattern) {
   var allMatches = [];
