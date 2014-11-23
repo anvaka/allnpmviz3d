@@ -45,7 +45,7 @@ Search box also accepts commands (must start with a colon):
 * `:dependencies PACKAGE_NAME` - prints direct dependencies of a `PACKAGE_NAME`
 * `:alldependents PACKAGE_NAME` - prints both direct and indirect dependents of a `PACKAGE_NAME`
 * `:alldependencies PACKAGE_NAME` - prints both direct and indirect dependencies of a `PACKAGE_NAME`
-* `:i love npm` - this is supposed to be an eastern egg. Since "users don't read", I'm putting it as a plain text in the readme file here. So you, my dear reader, can try it out yourself :).
+* `:i love npm` - this is supposed to be an easter egg. Since "users don't read", I'm putting it as a plain text in the readme file here. So you, my dear reader, can try it out yourself :).
 
 How is this done?
 =================
