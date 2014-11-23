@@ -1,5 +1,5 @@
 /**
- * This controller is responsible for providing feedbac:
+ * This controller is responsible for providing feedback:
  *  - Shows what's being loaded
  *  - Shows error in case of an error
  *  - Shows brief intro on startup

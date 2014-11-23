@@ -1,18 +1,41 @@
+/**
+ * Welcome to the entry point of this visualization. I tried to keep
+ * code modular and clean. But if I failed somewhere - feel free to
+ * open PR!
+ * 
+ * This is the main controller of the application. It kicks off graph
+ * download, initializes scene and sometimes coordinates events between
+ * application parts.
+ */
+ 
+// These requires are used to get angular controllers/directives into
+// final bundle.
 require('./search/searchBar');
 require('./help/message');
 require('./shareController');
 
+// Unfortunately THREE.js sometimes relies on global THREE object. We
+// patch global window here:
 require('./scene/patchThree');
 
+// appEvents is a singletone, which serves as a simple Pub/Sub mechanism.
+// Reduces coupling betweeng components.
 var appEvents = require('./events');
+
+// simple statistics about packages: how many dependents/dependencies?
 var getDependenciesInfo = require('./model/getDepsInfo');
 
+// register AppController as a controller within angular
 require('an').controller(AppController);
 
 function AppController($scope, $http) {
+  // graphmodel gives us access to the graph
   var graphModel = require('./graphModel')($http);
+  
+  // some directives need access to the graph model as well. Put it to parent scope here:
   $scope.graphModel = graphModel;
 
+  // Let the rendering begin:
   var scene = require('./scene/scene')(graphModel);
   if (scene) {
     // scene may be null, if webgl is not supported. This is very bad,
@@ -27,18 +50,21 @@ function AppController($scope, $http) {
     appEvents.on('jiggle', scene.jiggle);
   }
 
-
   // when labels are ready search control can start using them:
   graphModel.on('labelsReady', setGraphOnScope);
+
+  // when someone needs to show only part of the graph, they fire 'subgraphRequested' event:
   appEvents.on('subgraphRequested', showSubgraph);
 
   $scope.showSubgraph = showSubgraph;
 
+  // tooltip is what's shown when user hovers over node.
   $scope.tooltip = {
     isVisible: false
   };
 
   function setGraphOnScope() {
+    // TODO: maybe this should not be here.
     $scope.allPackagesGraph = graphModel.getGraph();
   }
 
