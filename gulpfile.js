@@ -19,15 +19,15 @@ var paths = {
   styles: { paths: [ path.join(__dirname, 'src/styles') ] }
 };
 
-gulp.task('default', ['build', 'startStaticServer', 'watchChanges']);
-gulp.task('build', ['makeDist', 'runBrowserify', 'copyDist', 'compileLess']);
+gulp.task('default', ['build', 'start static server', 'watch changes']);
+gulp.task('build', ['make dist', 'run browserify', 'copy dist', 'compile less']);
 
-gulp.task('runBrowserify', runBrowserify);
-gulp.task('compileLess', compileLess);
-gulp.task('makeDist', makeDist);
-gulp.task('copyDist', copyDist);
-gulp.task('watchChanges', watchChanges);
-gulp.task('startStaticServer', startStaticServer);
+gulp.task('run browserify', runBrowserify);
+gulp.task('compile less', compileLess);
+gulp.task('make dist', makeDist);
+gulp.task('copy dist', copyDist);
+gulp.task('watch changes', watchChanges);
+gulp.task('start static server', startStaticServer);
 
 function runBrowserify() {
   var fs = require('fs');
@@ -80,9 +80,9 @@ function copyDist() {
 }
 
 function watchChanges() {
-  gulp.watch(paths.scripts, ['runBrowserify']);
-  gulp.watch('src/styles/*.less', ['compileLess']);
-  gulp.watch(paths.markup, ['copyDist']);
+  gulp.watch(paths.scripts, ['run browserify']);
+  gulp.watch('src/styles/*.less', ['compile less']);
+  gulp.watch(paths.markup, ['copy dist']);
   gulp.watch('dist/**').on('change', notifyLivereload);
 }
 
