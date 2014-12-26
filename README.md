@@ -1,7 +1,7 @@
 Big bang of npm
 ================
 
-npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/) gives you a small spaceship to explore the universe from inside. `106,317` stars (packages), `235,887` connections (dependencies).
+npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/) gives you a small spaceship to explore the universe from inside. `114,806` stars (packages), `257,361` connections (dependencies).
 
 Use `WASD` keys to move around. If you are browsing this with a modern smartphone - rotate your device around to control the camera (WebGL is required).
 
