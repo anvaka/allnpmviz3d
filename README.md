@@ -1,7 +1,7 @@
 Big bang of npm
 ================
 
-npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/) gives you a small spaceship to explore the universe from inside. `106,317` stars (packages), `235,887` connections (dependencies).
+npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/) gives you a small spaceship to explore the universe from inside. `127,398` stars (packages), `291,169` connections (dependencies).
 
 Use `WASD` keys to move around. If you are browsing this with a modern smartphone - rotate your device around to control the camera (WebGL is required).
 
@@ -63,6 +63,8 @@ browser friendly bundle.
 The entry point to an app is [appController](https://github.com/anvaka/allnpmviz3d/blob/master/src/scripts/appController.js)
 You can start your exploration there. It bootstraps all key components and provides
 messaging between them.
+
+The data on [the website](http://anvaka.github.io/allnpmviz3d/) is last indexed on Feb 20, 2015.
 
 
 Building locally
