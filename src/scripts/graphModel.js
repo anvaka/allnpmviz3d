@@ -16,8 +16,7 @@ module.exports = function($http, $q) {
     .then(convertToPositions)
     .then(addNodesToGraph)
     .then(downloadLinks)
-    .
-  catch (reportError);
+    .catch (reportError);
 
   $http.get('data/labels.json')
     .then(addLabelsToGraph);

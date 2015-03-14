@@ -10,7 +10,6 @@ function createHitTest(domElement) {
   var lastIntersected;
   var postponed = true;
 
-  var projector = new THREE.Projector();
   var raycaster = new THREE.Raycaster();
 
   // This defines sensitivity of raycaster.
@@ -149,9 +148,7 @@ function createHitTest(domElement) {
       if (!particleSystem) return;
     }
 
-    var vector = new THREE.Vector3(mouse.x, mouse.y, 0.1);
-    projector.unprojectVector(vector, camera);
-    raycaster.ray.set(camera.position, vector.sub(camera.position).normalize());
+    raycaster.setFromCamera(mouse, camera);
     var intersects = raycaster.intersectObject(particleSystem);
     if (intersects.length > 0) {
       if (lastIntersected !== intersects[0].index) {
