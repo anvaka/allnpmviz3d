@@ -149,16 +149,100 @@ function createHitTest(domElement) {
     }
 
     raycaster.setFromCamera(mouse, camera);
-    var intersects = raycaster.intersectObject(particleSystem);
-    if (intersects.length > 0) {
-      if (lastIntersected !== intersects[0].index) {
-        lastIntersected = intersects[0].index;
+    var newIntersected = getIntersects(camera);
+
+    if (newIntersected !== undefined) {
+      if (lastIntersected !== newIntersected) {
+        lastIntersected = newIntersected;
         notifySelected(lastIntersected);
       }
     } else if (typeof lastIntersected === 'number') {
       // there is no node under mouse cursor. Let it know to UI:
       lastIntersected = undefined;
       notifySelected(undefined);
+    }
+  }
+
+  function getIntersects() {
+    var geometry = particleSystem.geometry;
+    var attributes = geometry.attributes;
+    var positions = attributes.position.array;
+    return raycast(positions, raycaster.ray, particleSystem.matrixWorld.elements);
+  }
+
+  function raycast(positions, ray, worldMatrix) {
+    var pointCount = positions.length / 3;
+    var minDistance = Number.POSITIVE_INFINITY;
+    var minIndex = -1;
+
+    var ox = ray.origin.x;
+    var oy = ray.origin.y;
+    var oz = ray.origin.z;
+
+    var dx = ray.direction.x;
+    var dy = ray.direction.y;
+    var dz = ray.direction.z;
+    var pt = {
+      x: 0,
+      y: 0,
+      z: 0
+    };
+
+    for (var i = 0; i < pointCount; i++) {
+      testPoint(positions[3 * i], positions[3 * i + 1], positions[3 * i + 2], i);
+    }
+
+    if (minIndex !== -1) {
+      return minIndex;
+    }
+
+    function testPoint(x, y, z, idx) {
+      var distance = distanceTo(x, y, z);
+      if (distance < 10) {
+        var ip = nearestTo(x, y, z); // intersect point
+        applyMatrix(ip, worldMatrix);
+        distance = Math.sqrt((ox - ip.x) * (ox - ip.x) + (oy - ip.y) * (oy - ip.y) + (oz - ip.z) * (oz - ip.z));
+        if (distance < minDistance) {
+          minDistance = distance;
+          minIndex = idx;
+        }
+      }
+    }
+
+    function applyMatrix(pt, e) {
+      var x = pt.x;
+      var y = pt.y;
+      var z = pt.z;
+      pt.x = e[0] * x + e[4] * y + e[8] * z + e[12];
+      pt.y = e[1] * x + e[5] * y + e[9] * z + e[13];
+      pt.z = e[2] * x + e[6] * y + e[10] * z + e[14];
+    }
+
+    function nearestTo(x, y, z) {
+      var directionDistance = (x - ox) * dx + (y - oy) * dy + (z - oz) * dz;
+      if (directionDistance < 0) {
+        pt.x = ox;
+        pt.y = oy;
+        pt.z = oz;
+      } else {
+        pt.x = dx * directionDistance + ox;
+        pt.y = dy * directionDistance + oy;
+        pt.z = dz * directionDistance + oz;
+      }
+      return pt;
+    }
+
+    function distanceTo(x, y, z) {
+      var directionDistance = (x - ox) * dx + (y - oy) * dy + (z - oz) * dz;
+      if (directionDistance < 0) {
+        // point behind ray
+        return Math.sqrt((ox - x) * (ox - x) + (oy - y) * (oy - y) + (oz - z) * (oz - z));
+      }
+      var vx = dx * directionDistance + ox;
+      var vy = dy * directionDistance + oy;
+      var vz = dz * directionDistance + oz;
+
+      return Math.sqrt((vx - x) * (vx - x) + (vy - y) * (vy - y) + (vz - z) * (vz - z));
     }
   }
 
