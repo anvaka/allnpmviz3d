@@ -5,8 +5,10 @@ var eventify = require('ngraph.events');
 var createGraph = require('ngraph.graph');
 var subgraph = require('./model/subgraph');
 
-module.exports = function($http, $q) {
-  var graph = createGraph();
+module.exports = function($http) {
+  var graph = createGraph({
+    uniqueLinkId: false // don't need unique link id, since we are not a multigraph
+  });
   var filteredGraph = graph;
   var labels;
 
@@ -41,7 +43,7 @@ module.exports = function($http, $q) {
         return;
       }
 
-      filteredGraph = createGraph();
+      filteredGraph = createGraph({ uniqueLinkId: false });
 
       var matcher = require('./search/matcher')(pattern);
       var idx = 0;
@@ -127,6 +129,7 @@ module.exports = function($http, $q) {
 
   function addLinksToGraph(res) {
     var arr = new Int32Array(res.data);
+    var lastFromId;
     for (var i = 0; i < arr.length; i++) {
       var id = arr[i];
       if (id < 0) {

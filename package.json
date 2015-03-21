@@ -34,7 +34,7 @@
     "bootstrap": "^3.3.0",
     "glslify": "^1.6.0",
     "ngraph.events": "0.0.3",
-    "ngraph.graph": "0.0.8",
+    "ngraph.graph": "0.0.10",
     "three": "0.70",
     "three.fly": "0.0.0",
     "three.orientation": "^1.1.0",
