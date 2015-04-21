@@ -1,7 +1,7 @@
 /**
  * Handles mouse/keyboard input and transforms camera position accordingly
  */
-var FlyControls = require('three.fly');
+var fly = require('three.fly');
 var eventify = require('ngraph.events');
 var appEvents = require('../events');
 
@@ -10,7 +10,7 @@ module.exports = createUserInputController;
 function createUserInputController(camera, domElement) {
   var clock = new THREE.Clock();
 
-  var wasdControls = new FlyControls(camera, domElement);
+  var wasdControls = fly(camera, domElement, THREE);
   var paused = false;
 
   domElement.tabIndex = 0;
