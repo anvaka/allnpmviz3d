@@ -5,8 +5,19 @@ npm is the largest package manager for javascript. [This visualization](http://a
 gives you a small spaceship to explore the universe from inside. `143,296` stars (packages),
 `333,255` connections (dependencies) - indexed April 23, 2015.
 
-Use `WASD` keys to move around. If you are browsing this with a modern smartphone
-- rotate your device around to control the camera (WebGL is required).
+# User controls
+
+|    |    |    |   |
+|---:|:---|---:|---|
+| `W`  | Move forward  | `Up` |Rotate up|
+| `S`  | Move backward  | `Down`  |Rotate down |
+| `A`  | Move left  |`Left`|Rotate left|
+| `D`  | Move right  |`Right` | Rotate right|
+| `Q`  | Roll right  |`R` | Fly up|
+| `E`  | Roll left  |`F` | Fly down|
+| `L`  | Toggle links  |`/` | Focus search|
+
+If you have a modern smartphone make sure to try this website there. 
 
 Video
 =====
