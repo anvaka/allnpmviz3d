@@ -2,8 +2,11 @@ Big bang of npm
 ================
 
 npm is the largest package manager for javascript. [This visualization](http://anvaka.github.io/allnpmviz3d/)
-gives you a small spaceship to explore the universe from inside. `143,296` stars (packages),
-`333,255` connections (dependencies) - indexed April 23, 2015.
+gives you a small spaceship to explore the universe from inside. Each dot is an npm package, 
+each connection means there is a dependency between two packages. The position of each package is determined
+by [force based layout](https://en.wikipedia.org/wiki/Force-directed_graph_drawing).
+
+Last time the npm was indexed April 23, 2015: `143,296` stars (packages),`333,255` connections (dependencies).
 
 # User controls
 
