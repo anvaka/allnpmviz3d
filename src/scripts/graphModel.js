@@ -133,11 +133,9 @@ module.exports = function($http) {
     for (var i = 0; i < arr.length; i++) {
       var id = arr[i];
       if (id < 0) {
-        id *= -1;
-        id -= 1;
-        lastFromId = id;
+        lastFromId = -id;
       } else {
-        graph.addLink(lastFromId, id);
+        graph.addLink(lastFromId - 1, id - 1);
       }
     }
 
