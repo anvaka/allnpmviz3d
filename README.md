@@ -85,8 +85,6 @@ The entry point to an app is [appController](https://github.com/anvaka/allnpmviz
 You can start your exploration there. It bootstraps all key components and provides
 messaging between them.
 
-The data on [the website](http://anvaka.github.io/allnpmviz3d/) is last indexed on Feb 20, 2015.
-
 
 Building locally
 ================
