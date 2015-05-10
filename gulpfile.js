@@ -103,7 +103,8 @@ function startStaticServer() {
 function notifyLivereload(event) {
   var fileName = require('path').relative(devServer.root, event.path);
   lr.changed({ body: { files: [fileName] } });
-  gutil.log("Notified live reload for http://" + devServer.server + ":" + devServer.port);
+  var serverName = devServer.server === '0.0.0.0' ? '127.0.0.1' : devServer.server;
+  gutil.log("Notified live reload for http://" + serverName + ":" + devServer.port);
 }
 
 function getRandomPortBasedOnPath(seed) {
