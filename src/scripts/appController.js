@@ -2,12 +2,12 @@
  * Welcome to the entry point of this visualization. I tried to keep
  * code modular and clean. But if I failed somewhere - feel free to
  * open PR!
- * 
+ *
  * This is the main controller of the application. It kicks off graph
  * download, initializes scene and sometimes coordinates events between
  * application parts.
  */
- 
+
 // These requires are used to get angular controllers/directives into
 // final bundle.
 require('./search/searchBar');
@@ -31,7 +31,7 @@ require('an').controller(AppController);
 function AppController($scope, $http) {
   // graphmodel gives us access to the graph
   var graphModel = require('./graphModel')($http);
-  
+
   // some directives need access to the graph model as well. Put it to parent scope here:
   $scope.graphModel = graphModel;
 

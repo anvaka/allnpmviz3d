@@ -11,9 +11,10 @@ function init3dView() {
   scene.sortObjects = false;
 
   var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 20000);
-  camera.position.x = 0;
-  camera.position.y = 0;
-  camera.position.z = 0;
+
+  camera.position.x = -5466;
+  camera.position.y = 216;
+  camera.position.z = 5388;
   camera.lookAt(new THREE.Vector3(0.5860185623168945, 0.5938381172414715, 0.5513062081376774));
   window.camera = camera;
 
