@@ -6,7 +6,7 @@ gives you a small spaceship to explore the universe from inside. Each dot is an 
 each connection means there is a dependency between two packages. The position of each package is determined
 by [force based layout](https://en.wikipedia.org/wiki/Force-directed_graph_drawing).
 
-Last time the npm was indexed April 23, 2015: `143,296` stars (packages),`333,255` connections (dependencies).
+Last time the npm was indexed May 10, 2015: `147,575` stars (packages),`344,042` connections (dependencies).
 
 # User controls
 
