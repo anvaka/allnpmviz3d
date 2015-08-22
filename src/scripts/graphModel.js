@@ -4,6 +4,8 @@
 var eventify = require('ngraph.events');
 var createGraph = require('ngraph.graph');
 var subgraph = require('./model/subgraph');
+var config = require('./config.js');
+var manifestEndpoint = config.dataUrl + 'manifest.json?nocache=' + (+new Date());
 
 module.exports = function($http) {
   var graph = createGraph({
@@ -11,17 +13,16 @@ module.exports = function($http) {
   });
   var filteredGraph = graph;
   var labels;
+  var dataEndpoint;
 
-  $http.get('data/positions.bin', {
-    responseType: 'arraybuffer'
-  })
+  $http.get(manifestEndpoint)
+    .then(setDataEndpoint)
+    .then(loadPositions)
     .then(convertToPositions)
     .then(addNodesToGraph)
-    .then(downloadLinks)
+    .then(downloadLinksAsync)
+    .then(downloadLabelsAsync)
     .catch (reportError);
-
-  $http.get('data/labels.json')
-    .then(addLabelsToGraph);
 
   var model = {
     getGraph: function getGraph() {
@@ -102,14 +103,23 @@ module.exports = function($http) {
     return labels.indexOf(packageName);
   }
 
-  function downloadLinks() {
+  function downloadLinksAsync() {
     model.fire('loadingConnections');
-    $http.get('data/links.bin', {
+
+    // Note: we are not returning a promise here. This is supposed to be
+    // fire and forget call.
+    $http.get(dataEndpoint + 'links.bin', {
       responseType: "arraybuffer"
     })
       .then(addLinksToGraph)
       .then(notifyCoreReady);
   }
+
+  function downloadLabelsAsync() {
+    $http.get(dataEndpoint + 'labels.json')
+      .then(addLabelsToGraph);
+  }
+
 
   function addLabelsToGraph(response) {
     labels = response.data;
@@ -133,9 +143,9 @@ module.exports = function($http) {
     for (var i = 0; i < arr.length; i++) {
       var id = arr[i];
       if (id < 0) {
-        lastFromId = -id;
+        lastFromId = -id - 1;
       } else {
-        graph.addLink(lastFromId - 1, id - 1);
+        graph.addLink(lastFromId, id - 1);
       }
     }
 
@@ -145,6 +155,17 @@ module.exports = function($http) {
 
   function notifyCoreReady() {
     model.fire('coreReady');
+  }
+
+  function setDataEndpoint(manifestResponse) {
+    var manifest = manifestResponse.data;
+    dataEndpoint = config.dataUrl + manifest.last + '/'
+  }
+
+  function loadPositions() {
+    return $http.get(dataEndpoint + 'positions.bin', {
+      responseType: 'arraybuffer'
+    })
   }
 
   function convertToPositions(response) {
