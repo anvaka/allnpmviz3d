@@ -1,3 +1,4 @@
+/* global THREE */
 /**
  * Responsible for rendering nodes on three.js scene
  */
@@ -113,12 +114,6 @@ function nodeView(scene) {
 function createParticleMaterial() {
   var glslify = require('glslify');
 
-  var particleShader = glslify({
-    vertex: './node-vertex.glsl',
-    fragment: './node-fragment.glsl',
-    sourceOnly: true
-  });
-
   var attributes = {
     size: {
       type: 'f',
@@ -144,8 +139,8 @@ function createParticleMaterial() {
   return new THREE.ShaderMaterial({
     uniforms: uniforms,
     attributes: attributes,
-    vertexShader: particleShader.vertex,
-    fragmentShader: particleShader.fragment,
+    vertexShader: glslify(__dirname + '/node-vertex.glsl'),
+    fragmentShader: glslify(__dirname + '/node-fragment.glsl'),
     blending: THREE.AdditiveBlending,
     depthTest: false,
     transparent: true
