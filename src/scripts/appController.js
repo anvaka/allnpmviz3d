@@ -12,7 +12,6 @@
 // final bundle.
 require('./search/searchBar');
 require('./help/message');
-require('./shareController');
 
 // Unfortunately THREE.js sometimes relies on global THREE object. We
 // patch global window here:
