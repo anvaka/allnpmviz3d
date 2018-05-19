@@ -1,5 +1,5 @@
 {
-  "name": "allnpmviz3d",
+  "name": "skusystem_visualizer",
   "scripts": {
     "start": "gulp -p 30131",
     "test": "tap test/*.js",
@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/anvaka/allnpmviz3d.git"
+    "url": "git://github.com/whimmly/skusystem_visualizer.git"
   },
   "devDependencies": {
     "brfs": "^1.4.3",
@@ -35,6 +35,7 @@
     "glslify": "^5.0.2",
     "ngraph.events": "0.0.3",
     "ngraph.graph": "0.0.10",
+    "request": "^2.86.0",
     "three": "0.70",
     "three.fly": "0.1.4",
     "three.orientation": "^1.1.0",
