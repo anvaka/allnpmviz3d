@@ -33,8 +33,8 @@ module.exports = function($http) {
 
     getNodeByName: getNodeByName,
 
-    getPackagePosition: function(packageName) {
-      var node = getNodeByName(packageName);
+    getProductPosition: function(productName) {
+      var node = getNodeByName(productName);
       return node && node.data.position;
     },
 
@@ -72,8 +72,8 @@ module.exports = function($http) {
     model.fire('downloadFailed', err);
   }
 
-  function filterSubgraph(packageName, type) {
-    var id = packageNameToId(packageName);
+  function filterSubgraph(productName, type) {
+    var id = productNameToId(productName);
     if (id < 0) return;
 
     var needAll = type && (type[0] === 'a') && (type[1] === 'l') && (type[2] === 'l');
@@ -90,17 +90,17 @@ module.exports = function($http) {
     return filteredGraph;
   }
 
-  function getNodeByName(packageName) {
-    var id = packageNameToId(packageName);
+  function getNodeByName(productName) {
+    var id = productNameToId(productName);
     if (id < 0) return;
 
     return graph.getNode(id);
   }
 
-  function packageNameToId(packageName) {
+  function productNameToId(productName) {
     if (!labels) return -1; // without labels we cannot do anything
     // doh O(n). Should I care?
-    return labels.indexOf(packageName);
+    return labels.indexOf(productName);
   }
 
   function downloadLinksAsync() {

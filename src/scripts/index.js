@@ -1,7 +1,7 @@
 require('angular');
 require('./appController');
 
-var ngApp = angular.module('allnpmviz3d', []);
+var ngApp = angular.module('skusystem_visualizer', []);
 
 require('an').flush(ngApp);
 

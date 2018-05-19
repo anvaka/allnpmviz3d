@@ -21,7 +21,7 @@ require('./scene/patchThree');
 // Reduces coupling betweeng components.
 var appEvents = require('./events');
 
-// simple statistics about packages: how many dependents/dependencies?
+// simple statistics about products: how many dependents/dependencies?
 var getDependenciesInfo = require('./model/getDepsInfo');
 
 // register AppController as a controller within angular
@@ -42,10 +42,10 @@ function AppController($scope, $http) {
     scene.on('preview', showPreview);
     scene.on('show-node-tooltip', showNodeTooltip);
     // TODO: these event seem to belong to scene itself:
-    // Someone requested to search a package. Forward it to scene:
+    // Someone requested to search a product. Forward it to scene:
     appEvents.on('search', scene.search);
     appEvents.on('focusScene', scene.focus);
-    appEvents.on('focusOnPackage', scene.focusOnPackage);
+    appEvents.on('focusOnProduct', scene.focusOnProduct);
     appEvents.on('jiggle', scene.jiggle);
   }
 
@@ -64,21 +64,21 @@ function AppController($scope, $http) {
 
   function setGraphOnScope() {
     // TODO: maybe this should not be here.
-    $scope.allPackagesGraph = graphModel.getGraph();
+    $scope.allProductsGraph = graphModel.getGraph();
   }
 
-  function showSubgraph(packageName, type) {
-    var filteredGraph = graphModel.filterSubgraph(packageName, type);
-    if (scene) scene.subgraph(packageName); // TODO: rename this to something else.
+  function showSubgraph(productName, type) {
+    var filteredGraph = graphModel.filterSubgraph(productName, type);
+    if (scene) scene.subgraph(productName); // TODO: rename this to something else.
 
     appEvents.fire('showDependencyGraph', {
-      name: packageName,
+      name: productName,
       type: type,
       graph: filteredGraph
     });
 
     if (filteredGraph) {
-      showPreview(packageName);
+      showPreview(productName);
     }
   }
 
@@ -99,21 +99,21 @@ function AppController($scope, $http) {
     if (!$scope.$$phase) $scope.$digest();
   }
 
-  function showPreview(packageName) {
+  function showPreview(productName) {
     // todo: This violates SRP. Should this be in a separate module?
-    if (packageName === undefined) return; // no need to toggle full preview
+    if (productName === undefined) return; // no need to toggle full preview
 
-    var node = graphModel.getNodeByName(packageName);
+    var node = graphModel.getNodeByName(productName);
 
-    if (!node) return; // no such package found
+    if (!node) return; // no such product found
 
     var depsInfo = getDependenciesInfo(node.id, node.links);
-    $scope.package = {
-      name: packageName,
+    $scope.product = {
+      name: productName,
       dependencies: depsInfo.dependencies,
       dependents: depsInfo.dependents
     };
-    $scope.showPackagePreview = true;
+    $scope.showProductPreview = true;
 
     digest();
   }

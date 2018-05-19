@@ -28,7 +28,7 @@ function sceneView(graphModel) {
     search: search,
     subgraph: subgraph,
     focus: focus,
-    focusOnPackage: focusOnPackage,
+    focusOnProduct: focusOnProduct,
     jiggle: jiggle
   });
 
@@ -85,10 +85,10 @@ function sceneView(graphModel) {
     focusOnSphere(jiggler.sphere);
   }
 
-  function focusOnPackage(packageName) {
+  function focusOnProduct(productName) {
     var pos;
     if (jiggler) {
-      var node = graphModel.getNodeByName(packageName);
+      var node = graphModel.getNodeByName(productName);
       if (node) {
         pos = {
           x: jiggler.points[node.id * 3],
@@ -97,14 +97,14 @@ function sceneView(graphModel) {
         };
       }
     } else {
-      pos = graphModel.getPackagePosition(packageName);
+      pos = graphModel.getProductPosition(productName);
     }
     if (!pos) return; // we are missing data
     hitTest.postpone();
     userInput.pause();
 
     autoPilot.flyTo(pos, function done() {
-      showPreview(packageName);
+      showPreview(productName);
       userInput.resume();
     });
   }
@@ -176,13 +176,13 @@ function sceneView(graphModel) {
 
   function handleNodeHover(e) {
     api.fire('show-node-tooltip', {
-      name: getPackageNameFromIndex(e.nodeIndex),
+      name: getProductNameFromIndex(e.nodeIndex),
       mouse: e
     });
   }
 
   function handleNodeClick(e) {
-    showPreview(getPackageNameFromIndex(e.nodeIndex));
+    showPreview(getProductNameFromIndex(e.nodeIndex));
   }
 
   function showPreview(name) {
@@ -190,10 +190,10 @@ function sceneView(graphModel) {
   }
 
   function handleNodeDblClick(e) {
-    focusOnPackage(getPackageNameFromIndex(e.nodeIndex));
+    focusOnProduct(getProductNameFromIndex(e.nodeIndex));
   }
 
-  function getPackageNameFromIndex(idx) {
+  function getProductNameFromIndex(idx) {
     if (idx !== undefined) {
       var node = graphModel.getGraph().getNode(idx);
       return node && node.data.label;

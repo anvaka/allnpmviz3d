@@ -11,46 +11,47 @@ var pagify = require('./pagify');
 
 function searchController($scope) {
   // when graph model is done loading we will have graph instance set via
-  // `allPackagesGraph` variable from scope
+  // `allProductsGraph` variable from scope
   var graph;
 
   // we will throttle user input to increase responsiveness
   var lastInputHandle;
 
   // since search is not started => no matches
-  $scope.matchedPackages = [];
+  $scope.matchedProducts = [];
 
   // we are not searching anything at the moment, hide search results:
   $scope.showSearchResults = false;
 
-  // on mobile devices we don't want to always show list of packages
-  $scope.showListOfPackages = true;
+  // on mobile devices we don't want to always show list of products
+  $scope.showListOfProducts = true;
 
   // let parent scope transfer focus to the scene
   $scope.formSubmitted = function(e) {
+
     appEvents.fire('focusScene');
-    if ($scope.selectedPackage && $scope.selectedPackage[0] === ':') {
+    if ($scope.selectedProduct && $scope.selectedProduct[0] === ':') {
       // command mode starts with colon and has a form of
       // <command> <value>
-      var commandInput = $scope.selectedPackage;
+      var commandInput = $scope.selectedProduct;
       var commandMatch = commandInput.match(/^:([^\s]+)(.+)?$/);
       if (commandMatch) handleCommand(commandMatch[1], commandMatch[2], commandInput);
     }
   };
 
-  $scope.showDetails = function(packageName) {
-    appEvents.fire('focusOnPackage', packageName);
+  $scope.showDetails = function(productName) {
+    appEvents.fire('focusOnProduct', productName);
     appEvents.fire('focusScene');
     if (screen.isSmall()) {
-      $scope.showListOfPackages = false;
+      $scope.showListOfProducts = false;
     }
   };
 
   appEvents.on('showDependencyGraph', showDependencyGraph);
 
-  // `allPackagesGraph` will be available only after we are done downloading
+  // `allProductsGraph` will be available only after we are done downloading
   // graph data. Need to monitor this event before search can become enabled
-  $scope.$watch('allPackagesGraph', function(newValue, oldValue) {
+  $scope.$watch('allProductsGraph', function(newValue, oldValue) {
     if (!newValue) return;
 
     graph = newValue;
@@ -114,34 +115,34 @@ function searchController($scope) {
   function showDependencyGraph(e) {
     $scope.showSearchResults = true;
     if (screen.isSmall()) {
-      $scope.showListOfPackages = false;
+      $scope.showListOfProducts = false;
     }
     if (e.type === 'dependents') {
-      $scope.selectedPackage = ':dependents ' + e.name;
+      $scope.selectedProduct = ':dependents ' + e.name;
     } else if (e.type === 'dependencies') {
-      $scope.selectedPackage = ':dependencies ' + e.name;
+      $scope.selectedProduct = ':dependencies ' + e.name;
     } else if (e.type === 'alldependents') {
-      $scope.selectedPackage = ':alldependents ' + e.name;
+      $scope.selectedProduct = ':alldependents ' + e.name;
     } else if (e.type === 'alldependencies') {
-      $scope.selectedPackage = ':alldependencies ' + e.name;
+      $scope.selectedProduct = ':alldependencies ' + e.name;
     } else {
       throw new Error('Unsupported subgraph type');
     }
 
     var allMatches = [];
-    var packageName = require('./simpleEscape')(e.name);
+    var productName = require('./simpleEscape')(e.name);
     var header;
     if (e.graph) {
       e.graph.forEachNode(function(node) {
         if (node.data.label !== e.name) allMatches.push(node.data.label);
       });
       if (e.type.match(/(all)?dependents/)) {
-        header = createDependentsResultHeader(allMatches.length, packageName);
+        header = createDependentsResultHeader(allMatches.length, productName);
       } else if (e.type.match(/(all)?dependencies/)){
-        header = createDependenciesResultHeader(allMatches.length, packageName);
+        header = createDependenciesResultHeader(allMatches.length, productName);
       }
     } else {
-      header = 'Could not find package ' + packageName;
+      header = 'Could not find product ' + productName;
     }
 
     showMatches(allMatches, header);
@@ -150,9 +151,9 @@ function searchController($scope) {
   function showMatches(allMatches, header) {
     // Gradually render allMatches to DOM (e.g. when user scrolls the list)
     // but first, remove all items from array
-    $scope.matchedPackages.length = 0;
+    $scope.matchedProducts.length = 0;
 
-    // let UI know how many packages we have
+    // let UI know how many products we have
     $scope.totalMatches = allMatches.length;
     $scope.header = header;
 
@@ -164,7 +165,7 @@ function searchController($scope) {
 
     function appendMatches(items) {
       for (var i = 0; i < items.length; ++i) {
-        $scope.matchedPackages.push(items[i]);
+        $scope.matchedProducts.push(items[i]);
       }
     }
   }
@@ -183,32 +184,32 @@ function getAllMatches(graph, pattern) {
   return allMatches;
 }
 
-function createDependentsResultHeader(foundCount, packageName) {
+function createDependentsResultHeader(foundCount, productName) {
   if (foundCount === 1) {
-    return "1 <small>package depends on </small> " + packageName;
+    return "1 <small>product depends on </small> " + productName;
   } else if (foundCount === 0) {
-    return "<small>No packages depend on </small> " + packageName;
+    return "<small>No products depend on </small> " + productName;
   } else {
-    return "{{totalMatches|number}} <small>packages depend on </small> " + packageName;
+    return "{{totalMatches|number}} <small>products depend on </small> " + productName;
   }
 }
 
-function createDependenciesResultHeader(foundCount, packageName) {
+function createDependenciesResultHeader(foundCount, productName) {
   if (foundCount === 1) {
-    return packageName + " <small>depends on </small> 1 <small>package</small>";
+    return productName + " <small>depends on </small> 1 <small>product</small>";
   } else if (foundCount === 0) {
-    return packageName + "<small> does not have dependencies</small>";
+    return productName + "<small> does not have dependencies</small>";
   } else {
-    return packageName + "<small> depends on</small> {{totalMatches|number}} <small>packages</small>";
+    return productName + "<small> depends on</small> {{totalMatches|number}} <small>products</small>";
   }
 }
 
 function createSearchResultsHeader(foundCount) {
   if (foundCount === 1) {
-    return "<small>Found</small> 1 <small>package</small>";
+    return "<small>Found</small> 1 <small>product</small>";
   } else if (foundCount === 0) {
     return "<small>No matches found</small>";
   } else {
-    return "<small>Found</small> {{totalMatches|number}} <small>packages</small>";
+    return "<small>Found</small> {{totalMatches|number}} <small>products</small>";
   }
 }
