@@ -5,7 +5,7 @@ var eventify = require('ngraph.events');
 var createGraph = require('ngraph.graph');
 var subgraph = require('./model/subgraph');
 var config = require('./config.js');
-var manifestEndpoint = config.dataUrl + 'manifest.json?nocache=' + (+new Date());
+var manifestEndpoint = config.dataUrl + 'manifest.json';
 
 module.exports = function($http) {
   var graph = createGraph({

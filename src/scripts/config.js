@@ -1,3 +1,3 @@
 module.exports = {
-  dataUrl: '//anvaka.github.io/galactic-data/npm/'
+  dataUrl: 'http://s3.amazonaws.com/synscript/graph-data/turtle/'
 };
