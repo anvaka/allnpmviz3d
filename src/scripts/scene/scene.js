@@ -128,7 +128,7 @@ function sceneView(graphModel) {
     // we always hide links when graph is filtered. Restore links rendering
     // settings only when graph is not filtered
     if (pattern && shouldShowLinks) {
-      linkView.linksVisible(false);
+      linkView.linksVisible(true);
     } else if (!pattern) {
       linkView.linksVisible(shouldShowLinks);
     }
