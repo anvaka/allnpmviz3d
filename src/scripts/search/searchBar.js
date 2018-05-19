@@ -12,7 +12,7 @@ var appEvents = require('../events');
 
 function searchBar() {
   return {
-    scope: { allPackagesGraph: '=' },
+    scope: { allProductsGraph: '=' },
     restrict: 'E',
     replace: true,
     template: fs.readFileSync(__dirname + '/searchBar.html', 'utf8'),

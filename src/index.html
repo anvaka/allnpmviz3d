@@ -3,41 +3,41 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>npm universe</title>
+    <title>Whimmly SkuSystem Visualizer</title>
     <link rel="stylesheet" type="text/css" href="styles/style.css">
     <link href='//fonts.googleapis.com/css?family=PT+Sans|Roboto' rel='stylesheet' type='text/css'>
   </head>
   <body >
-    <search-bar all-packages-graph='allPackagesGraph'></search-bar>
+    <search-bar all-products-graph='allProductsGraph'></search-bar>
     <div class='steering'>
       <div class='inner'></div>
       <div class="steering-help">Press SPACE to deactivate steering mode</div>
     </div>
-    <div class="package-preview ng-cloak container-fluid row" ng-show='showPackagePreview'>
+    <div class="product-preview ng-cloak container-fluid row" ng-show='showProductPreview'>
       <div class='hidden-xs'>
         <div class="col-xs-6">
-          <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank"><h4 title='{{package.name}}'>{{package.name}}</h4></a>
+          <a href='#' ng-href="{{'https://www.npmjs.org/product/' + product.name}}" target="_blank"><h4 title='{{product.name}}'>{{product.name}}</h4></a>
         </div>
         <div class="col-xs-3">
           <div class="row">
-            <a href='#' ng-click='showSubgraph(package.name, "dependencies")'><h2>{{package.dependencies | number}}</h2></a>
+            <a href='#' ng-click='showSubgraph(product.name, "dependencies")'><h2>{{product.dependencies | number}}</h2></a>
           </div>
           <div class="row small">Dependencies</div>
         </div>
         <div class="col-xs-3">
           <div class="row">
-            <a href='#' ng-click='showSubgraph(package.name, "dependents")'><h2>{{package.dependents | number}}</h2></a>
+            <a href='#' ng-click='showSubgraph(product.name, "dependents")'><h2>{{product.dependents | number}}</h2></a>
           </div>
           <div class="row small">Dependents</div>
         </div>
       </div>
       <div class="visible-xs-block">
         <div class="col-xs-12 info-block">
-          <a href='#' ng-href="{{'https://www.npmjs.org/package/' + package.name}}" target="_blank">{{package.name}}</a>
+          <a href='#'>{{product.name}}</a>
           has
-          <a href='#' ng-click='showSubgraph(package.name, "dependencies")'>{{package.dependencies | number}}</a>
+          <a href='#' ng-click='showSubgraph(product.name, "dependencies")'>{{product.dependencies | number}}</a>
           dependencies, and
-          <a href='#' ng-click='showSubgraph(package.name, "dependents")'>{{package.dependents | number}}</a>
+          <a href='#' ng-click='showSubgraph(product.name, "dependents")'>{{product.dependents | number}}</a>
           dependents
         </div>
       </div>
@@ -48,21 +48,8 @@
 
     <help-message class='loading-log' graph-model='graphModel'></help-message>
 
-    <div class='share' ng-controller='ShareController'>
-      <p><a href="https://github.com/anvaka/allnpmviz3d#big-bang-of-npm">About</a></p>
-      <p><a href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fgithub.com%2Fanvaka%2Fallnpmviz3d" ng-click='share("twitter", $event)'>share to twitter</a></p>
-      <p><a href="https://plus.google.com/share?url=https%3A%2F%2Fgithub.com%2Fanvaka%2Fallnpmviz3d" ng-click='share("google", $event)'>share to google+</a></p>
-    </div>
     <script src='bundle.js' type="text/javascript" charset="utf-8">
     </script>
 
-<script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-47259320-1', 'anvaka.github.io');
-  ga('send', 'pageview');
-</script>
   </body>
 </html>
